@@ -1,0 +1,226 @@
+/* ================================
+   HELEN — HELP (estilo consistente)
+   Se apoya en variables/estilos de globals.css
+   ================================ */
+
+/* Layout general centrado como en otras pantallas */
+.help-page{
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px min(3vw, 24px) 18px;
+}
+
+.help-page{
+  min-height: 100svh;              /* usa svh para móviles */
+  display: flex;
+  flex-direction: column;
+  align-items: center;              /* centra horizontal */
+  justify-content: center;          /* centra vertical */
+  padding: 32px 22px;
+  gap: 20px;                        /* separación entre secciones */
+}
+.help-header,
+.help-content,
+.help-footer{
+  width: min(96%, 1240px);
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Header ---------- */
+.help-header{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 14px;
+}
+
+.help-header h1{
+  margin: 0;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -.3px;
+  color: var(--fg-strong, #fff);
+}
+
+.back-button{
+  width: 46px; height: 46px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.10));
+  color: #fff;
+  display: grid; place-items: center;
+  box-shadow: var(--shadow-tile);
+  cursor: pointer;
+  transition: transform var(--t-fast) ease, border-color var(--t-fast) ease, box-shadow var(--t-fast) ease;
+}
+@media (hover:hover){
+  .back-button:hover{
+    transform: translateY(-2px);
+    border-color: rgba(190,210,230,.22);
+    box-shadow: 0 18px 36px rgba(0,0,0,.28);
+  }
+}
+
+.title-wrap{ display:flex; flex-direction:column; gap:6px }
+.title-wrap h1{
+  margin: 0;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -.3px;
+  color: var(--fg-strong, #fff);
+}
+.subtitle{
+  margin: 0;
+  color: var(--fg-soft);
+  font-size: clamp(14px, 2.2vw, 18px);
+}
+
+/* ---------- Secciones ---------- */
+.section{ margin-top: 18px }
+.section-title{
+  margin: 10px 0 12px;
+  color: #dfe9ff;
+  font-size: clamp(18px, 3.2vw, 24px);
+  font-weight: 600;
+}
+
+/* ---------- Tarjetas de temas ---------- */
+.topics{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.topic-card{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 18px;
+  border-radius: var(--r-md);
+  text-decoration: none;
+  color: var(--fg);
+  background: rgba(15,26,43,.60);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-tile);
+  transition: transform var(--t-fast) ease, border-color var(--t-fast) ease, box-shadow var(--t-fast) ease, background-color var(--t-fast) ease;
+}
+@media (hover:hover){
+  .topic-card:hover{
+    transform: translateY(-4px);
+    border-color: rgba(190,210,230,.22);
+    box-shadow: 0 28px 64px rgba(0,0,0,.38);
+  }
+}
+
+/* Botón azul consistente (igual que quick-nav/settings) */
+.topic-icon{
+  width: 84px; height: 84px; border-radius: 20px;
+  display:grid; place-items:center;
+  background: radial-gradient(60% 60% at 30% 30%, var(--blue-a), var(--blue-b));
+  box-shadow: 0 12px 26px rgba(46,107,255,.35);
+}
+.topic-icon i{ color:#ecf6ff; font-size: 34px }
+.topic-icon--purple{
+  background: radial-gradient(60% 60% at 30% 30%, #b680ff, #6f4ddf);
+  box-shadow: 0 12px 26px rgba(111,77,223,.35);
+}
+.topic-icon--indigo{
+  background: radial-gradient(60% 60% at 30% 30%, #66a7ff, #3a63ff);
+  box-shadow: 0 12px 26px rgba(58,99,255,.35);
+}
+
+.topic-title{
+  color:#fff; font-weight:700; letter-spacing:.2px;
+  font-size: clamp(18px, 2.6vw, 22px);
+}
+.topic-sub{
+  color: rgba(240,247,255,.86);
+  font-size: 13.5px;
+}
+
+/* ---------- About card ---------- */
+.about-card{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  padding: 18px 20px;
+  border-radius: var(--r-md);
+  background:
+    radial-gradient(120% 120% at 20% 0%, rgba(21,146,255,.12), transparent 50%),
+    linear-gradient(180deg, var(--card-top), var(--card-bot));
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-card);
+}
+.about-icon{
+  width: 64px; height: 64px; border-radius: 16px;
+  display:grid; place-items:center;
+  background: radial-gradient(60% 60% at 30% 30%, var(--blue-a), var(--blue-b));
+  box-shadow: 0 12px 26px rgba(46,107,255,.35);
+  color:#ecf6ff; font-size: 26px;
+}
+.about-title{
+  margin: 2px 0 8px;
+  color:#fff; font-weight:700; letter-spacing:.2px; font-size: 20px;
+}
+.about-text{ color: var(--fg) }
+
+
+/* ---------- FAQ ---------- */
+.faq{ display:flex; flex-direction:column; gap: 10px }
+.faq-item{
+  border-radius: var(--r-md);
+  background: rgba(15,26,43,.60);
+  border: 1px solid var(--card-border);
+  margin: 5px;
+  box-shadow: var(--shadow-tile);
+  overflow: hidden;
+}
+.faq-item[open] { border-color: rgba(190,210,230,.22) }
+
+.faq-q{
+  list-style: none;
+  cursor: pointer;
+  padding: 16px 18px;
+  color:#eaf2ff;
+  position: relative;
+  font-weight: 600;
+}
+.faq-q::-webkit-details-marker{ display:none }
+.faq-q::after{
+  content: "\F282"; /* chevron-down */
+  font-family: "bootstrap-icons";
+  position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+  color: var(--fg-soft);
+}
+.faq-item[open] .faq-q::after{ content: "\F286"; } /* chevron-up */
+
+.faq-a{
+  padding: 18px 16px;
+  color: var(--fg);
+  border-top: 1px solid rgba(190,210,230,.14);
+}
+
+/* ---------- Footer ---------- */
+.help-footer hr{
+  border: none; border-top: 1px solid rgba(190,210,230,.14);
+  margin: 14px 0 10px;
+}
+.help-footer .version{
+  color: var(--fg-soft);
+  font-size: 13px;
+  text-align:center;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1020px){
+  .topics{ grid-template-columns: repeat(2, minmax(0,1fr)) }
+}
+@media (max-width: 720px){
+  .topics{ grid-template-columns: 1fr }
+  .topic-icon{ width:72px; height:72px; border-radius:18px }
+}

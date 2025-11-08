@@ -1,0 +1,430 @@
+/* =====================================================
+   HELEN – HOME (Mockup Azul Minimalista)  v2
+   - Contenido centrado
+   - Glows más luminosos
+   - Botón azul uniforme en todas las tarjetas
+   - "Sensación" color claro forzado
+   - Animaciones optimizadas / suaves
+   ===================================================== */
+
+/* ------------------ Tokens ------------------ */
+:root{
+  --bg: var(--helen-bg);
+  --halo-a: var(--helen-halo-a);
+  --halo-b: var(--helen-halo-b);
+  --halo-c: var(--helen-halo-c);
+
+  --card-top: var(--helen-surface);
+  --card-bot: var(--helen-surface-alt);
+  --card-border: var(--helen-card-border);
+
+  --fg-strong: var(--helen-text-strong);
+  --fg: var(--helen-text-primary);
+  --fg-soft: var(--helen-text-soft);
+  --muted: var(--helen-text-muted);
+
+  --blue-a: var(--helen-accent-soft);
+  --blue-b: var(--helen-accent-strong);
+
+  --shadow-card: 0 26px 60px rgba(0,0,0,.38);
+  --shadow-tile: 0 22px 44px rgba(0,0,0,.34);
+
+  --r-lg: 26px;
+  --r-md: 18px;
+  --r-sm: 12px;
+
+  --t-fast: .16s;
+  --t-med: .25s;
+}
+
+/* ----------------- Reset suave ----------------- */
+*{ box-sizing: border-box }
+html,body{ height:100% }
+body{
+  margin:0;
+  font-family: "Roboto", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  color: var(--fg);
+  background-color: var(--bg);
+  background:
+    radial-gradient(1200px 600px at 12% 10%, var(--halo-a), transparent 60%),
+    radial-gradient(1200px 700px at 88% 92%, var(--halo-b), transparent 60%),
+    radial-gradient(700px 500px at 20% 85%, var(--halo-c), transparent 70%),
+    var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Accesibilidad / rendimiento */
+@media (prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition: none !important }
+}
+
+/* =========================== GLOWS =========================== */
+.helen-glow{
+  position: fixed; inset: auto auto -12vh -14vw;
+  width: 52vw; height: 52vw; max-width: 900px; max-height: 900px;
+  border-radius: 50%; pointer-events: none; z-index: 0;
+  filter: blur(80px); opacity: .36;
+  background: radial-gradient(closest-side, rgba(86,162,255,.50), rgba(86,162,255,0) 65%);
+  will-change: transform;
+  animation: glowFloat 18s ease-in-out infinite alternate;
+}
+.helen-glow--left{ top: -10vh; left: -12vw }
+.helen-glow--right{
+  right: -14vw; bottom: -12vh;
+  background: radial-gradient(closest-side, rgba(0,212,255,.40), rgba(0,212,255,0) 65%);
+  opacity:.32; animation-delay: -2.2s;
+}
+@keyframes glowFloat{
+  0%{ transform: translate3d(0,0,0) scale(1) }
+  100%{ transform: translate3d(2.6vw,-1.8vh,0) scale(1.06) }
+}
+
+/* Menos carga visual en pantallas pequeñas */
+@media (max-width: 800px){
+  .helen-glow{ filter: blur(60px); opacity:.28 }
+}
+
+/* ====================== LAYOUT GENERAL ======================= */
+.home-hero{
+  position: relative; z-index: 1;
+  min-height: 100svh;
+  display: flex; justify-content: center; align-items: center; /* centrado vertical */
+  padding: 72px 28px 56px;
+}
+.home-layout{
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 520px; /* izquierda contenido, derecha accesos */
+  gap: 44px;
+}
+
+/* Reloj + fecha */
+.home-left{ display: grid; grid-auto-rows: min-content; gap: 24px }
+.home-time{ text-align:center }
+.home-time .clock{
+  font-size: clamp(84px, 18vw, 186px);
+  line-height: .9;
+  font-weight: 200;  /* menos grueso */
+  color: #fff;
+  letter-spacing: -1.2px;
+}
+.date-section{
+  font-size: clamp(16px, 2.6vw, 20px);
+  color: rgba(255,255,255,.78);
+  margin-top: 8px;
+}
+
+/* ===================== TARJETA DE CLIMA ====================== */
+.weather-card{
+  border-radius: var(--r-lg);
+  padding: 28px 34px;
+  background: linear-gradient(180deg, var(--card-top), var(--card-bot));
+  border: 1px solid var(--card-border);
+  color: var(--fg);
+  box-shadow: var(--shadow-card);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+}
+.weather-card__left{
+  display: flex; align-items: center; gap: 16px; min-width: 0;
+}
+.weather-card__icon{
+  width: 74px; height: 74px; border-radius: 20px;
+  display: grid; place-items: center;
+  background: radial-gradient(60% 60% at 30% 30%, var(--blue-a), var(--blue-b));
+  box-shadow: 0 12px 28px rgba(46,107,255,.35);
+}
+.weather-card__icon .weather-icon{ font-size: 34px; color:#fff }
+
+/* Títulos / ciudad */
+.weather-card__meta .status{
+  margin: 0 0 6px; font-weight: 600; letter-spacing: .2px;
+  color: var(--fg-strong); font-size: clamp(22px, 3.4vw, 28px);
+  text-transform: capitalize;
+}
+.weather-card__meta .location{
+  margin: 0; color: var(--fg-soft); font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Temperatura / sensación */
+.weather-card__right{
+  text-align: right; display:flex; flex-direction:column; align-items:flex-end; justify-content:center; gap:8px;
+}
+.weather-card__right .temperature{
+  font-size: clamp(40px, 6vw, 54px); letter-spacing: .2px; color: var(--fg-strong); font-weight: 500;
+}
+
+/* --- FIX: "Sensación" siempre claro --- */
+.weather-card__right .feels-like,
+.weather-card__right .feels-like *,
+.weather-card__right .feels-like i,
+.weather-card__right .feels-like span{
+  color: var(--fg-soft) !important;
+}
+.weather-card__right .feels-like{
+  display: inline-flex; align-items: center; gap: 8px; font-size: 14px;
+}
+.weather-card__right .feels-like i{ font-size: 16px; opacity:.9; }
+
+/* Divider + métricas */
+.weather-card__divider{
+  grid-column: 1 / -1; border: none;
+  border-top: 1px solid rgba(190,210,230,.14); margin: 18px 0 12px;
+}
+.weather-card__metrics{
+  grid-column: 1 / -1;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+}
+.metric{ text-align:center }
+.metric__label{ color: var(--fg-soft); font-size: 14px; margin-bottom: 6px }
+.metric__value{ color: var(--fg-strong); font-size: 20px; font-weight: 600 }
+
+/* =================== TARJETAS / QUICK NAV ==================== */
+.quick-nav{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 200px;
+  gap: 24px;
+}
+.qcard{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+  border-radius: var(--r-md);
+  background: rgba(15,26,43,.60);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-tile);
+  color: var(--fg);
+  text-decoration: none;
+  transition: transform var(--t-fast) ease, border-color var(--t-fast) ease, box-shadow var(--t-fast) ease, background-color var(--t-fast) ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.qcard:hover {
+  transform: translateY(-5px);
+  background: linear-gradient(145deg, rgba(40, 60, 90, 0.9), rgba(25, 40, 60, 0.6));
+  box-shadow: 0 0 40px rgba(0, 150, 255, 0.2);
+}
+
+.qcard:hover i {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(0, 180, 255, 0.6);
+}
+@media (hover: hover){
+  .qcard:hover,
+  .qcard:focus-visible{
+    transform: translateY(-4px);
+    border-color: rgba(190,210,230,.22);
+    outline: none;
+    box-shadow: 0 28px 64px rgba(0,0,0,.38);
+  }
+}
+
+/* Botoncito azul uniforme */
+.qcard__icon,
+.dash-card__icon{
+  width: 72px; height: 72px; border-radius: 18px;
+  display:grid; place-items:center;
+  background: radial-gradient(60% 60% at 30% 30%, var(--blue-a), var(--blue-b));
+  box-shadow: 0 12px 26px rgba(46,107,255,.35);
+}
+.qcard__icon i,
+.dash-card__icon i{ color:#ecf6ff; font-size: 30px }
+
+.qcard__title{ color:#fff; font-weight:600; letter-spacing:.2px; font-size:18px }
+.qcard__subtitle{ color: rgba(240,247,255,.86); font-size: 13px }
+.qspan-2{ grid-column: 1 / -1; height: 180px }
+
+/* ---------- Tarjetas secundarias (Pronóstico / Alarmas) ---------- */
+.home-cards{
+  display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 24px;
+}
+.dash-card{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+  min-height: 164px;
+  background: rgba(15,26,43,.60);
+  border: 1px solid var(--card-border);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-tile);
+  text-decoration:none; color: var(--fg);
+  transition: transform var(--t-fast) ease, border-color var(--t-fast) ease, box-shadow var(--t-fast) ease;
+  text-align:center;
+}
+@media (hover: hover){
+  .dash-card:hover{ transform: translateY(-4px); border-color: rgba(190,210,230,.22); box-shadow: 0 28px 64px rgba(0,0,0,.38) }
+}
+.dash-card__title{ color:#fff; font-weight:600; font-size:17px; margin-top:6px }
+.dash-card__subtitle{ color: rgba(240,247,255,.86); font-size:13px; margin-top:2px }
+
+/* =================== BOTÓN / MODAL DE WIFI =================== */
+.wifi-button-container{ position: fixed; top: 18px; right: 18px; z-index: 10 }
+.wifi-button{
+  width: 46px; height: 46px; border-radius: 50%;
+  display:grid; place-items:center; cursor:pointer;
+  border: 1px solid rgba(255,255,255,.12);
+  background: linear-gradient(145deg, rgba(255,255,255,.08), rgba(255,255,255,.14));
+  transition: transform var(--t-fast) ease, box-shadow var(--t-fast) ease, background-color var(--t-fast) ease;
+  box-shadow: 0 8px 18px rgba(0,0,0,.18);
+  will-change: transform;
+}
+@media (hover: hover){
+  .wifi-button:hover{ transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,.22) }
+}
+.wifi-icon{ color:#fff; font-size: 20px }
+
+.wifi-modal{
+  position: fixed; inset:0; display:none; place-items:center;
+  background: rgba(0,0,0,.48); z-index: 20;
+}
+.wifi-modal-content{
+  width: min(440px, 92vw);
+  max-height: 80svh; overflow:auto;
+  border-radius: var(--r-lg);
+  padding: 22px;
+  background: linear-gradient(180deg, var(--card-top), var(--card-bot));
+  border: 1px solid var(--card-border);
+  color: var(--fg);
+  box-shadow: var(--shadow-card);
+}
+.wifi-modal-header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding-bottom:12px; margin-bottom:16px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.wifi-modal-header h2{ margin:0; font-size:20px; color:#fff }
+.close-button{
+  border:none; background:transparent; color: var(--fg-soft); font-size: 24px; cursor:pointer
+}
+@media (hover: hover){
+  .close-button:hover{ color: var(--fg-strong) }
+}
+
+.buttons-wifi{ display:flex; justify-content:flex-end; gap:10px; margin-bottom:10px }
+.refresh-button{
+  border:1px solid rgba(255,255,255,.12);
+  border-radius: var(--r-sm);
+  padding:10px 14px; color:#fff; cursor:pointer;
+  background: rgba(255,255,255,.08);
+  transition: background-color var(--t-fast) ease, transform var(--t-fast) ease;
+}
+@media (hover: hover){
+  .refresh-button:hover{ background: rgba(255,255,255,.14); transform: translateY(-1px) }
+}
+.refresh-button i{ font-size: 16px }
+
+.wifi-list{
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: var(--r-sm);
+  padding: 6px; margin-bottom: 16px;
+  max-height: 260px; overflow:auto;
+  scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.25) transparent;
+}
+.wifi-list::-webkit-scrollbar{ width:6px }
+.wifi-list::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.25); border-radius: 8px }
+
+.wifi-item{
+  display:flex; align-items:center; gap:12px;
+  padding: 12px 12px; border-radius: 12px; cursor:pointer;
+  transition: background-color var(--t-fast) ease, transform var(--t-fast) ease;
+}
+@media (hover: hover){
+  .wifi-item:hover{ background: rgba(255,255,255,.08) }
+}
+.wifi-item.selected{ background: rgba(108, 92, 231, .18); border: 1px solid rgba(160,190,220,.22) }
+.wifi-signal{ width:24px; display:grid; place-items:center; color:#7db2ff }
+.wifi-name{ flex:1; color: var(--fg) }
+
+.password-input-container{ display:none; position:relative; margin-bottom: 14px }
+.password-input{
+  width:100%; border-radius: 12px; padding: 14px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06); color:#fff;
+}
+.password-input::placeholder{ color: rgba(255,255,255,.55) }
+.toggle-password{
+  position:absolute; right:12px; top:50%; transform:translateY(-50%);
+  border:none; background:transparent; color:#c9d6ea; cursor:pointer;
+}
+
+.connect-button{
+  width:100%; padding: 14px; border-radius: 12px;
+  border:none; cursor:pointer; font-weight:600; color:#fff;
+  background: linear-gradient(145deg, #2be67b, #6ef3a7);
+  transition: transform var(--t-fast) ease, box-shadow var(--t-fast) ease, filter var(--t-fast) ease;
+}
+.connect-button:disabled{ background: linear-gradient(145deg, #555, #666); opacity:.7; cursor:not-allowed }
+@media (hover: hover){
+  .connect-button:not(:disabled):hover{ transform: translateY(-2px); box-shadow: 0 10px 18px rgba(0,0,0,.22) }
+}
+.loader{ display:none }
+
+/* ========================== RESPONSIVE ========================== */
+@media (max-width: 1200px){
+  .home-layout{ grid-template-columns: 1fr 480px }
+}
+@media (max-width: 1020px){
+  .home-hero{ padding-top: 56px; padding-bottom: 48px }
+  .home-layout{ grid-template-columns: 1fr }
+  .quick-nav{ grid-template-columns: repeat(2, 1fr) }
+}
+@media (max-width: 640px){
+  .home-cards{ grid-template-columns: 1fr }
+  .quick-nav{ grid-template-columns: 1fr }
+  .qspan-2{ grid-column: auto; height: 180px }
+}
+
+/* =================== UTILIDADES =================== */
+.hidden{ display:none !important }
+
+/* === Centrado y sin scroll para HELEN · Home === */
+html, body {
+  height: 100%;
+  overflow: hidden;              /* elimina cualquier scroll */
+}
+/* ===== HELEN — Glows estáticos solo en INDEX ===== */
+.helen-glow {
+  animation: none !important;   /* sin keyframes */
+  transform: none !important;   /* fija su posición */
+  will-change: auto !important; /* no reservar capa */
+}
+
+/* Puedes suavizar un poco el blur si quieres aún menos costo */
+.helen-glow { filter: blur(70px); }          /* opcional */
+@media (max-width: 800px){
+  .helen-glow { filter: blur(60px); opacity: .28; } /* igual que global */
+}
+
+/* Asegura que el contenido quede por encima (por si otro CSS lo cambia) */
+.home-hero, .home-layout { position: relative; z-index: 1; }
+
+/* === Ajuste: eliminar las dos tarjetas inferiores y centrar el clima === */
+.home-cards {
+  display: none; /* oculta las tarjetas de Pronóstico y Alarmas */
+}
+
+.weather-card {
+  width: 100%;
+  max-width: 640px; /* más grande que antes */
+  margin: 2rem auto; /* centra horizontalmente */
+  padding: 2rem 2.5rem;
+  transform: scale(1.05); /* efecto leve de agrandado */
+}
+
+/* Centrar todo el bloque de la izquierda verticalmente */
+.home-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  height: 100%;
+}
+
+/* Ajuste opcional para que el reloj no quede tan arriba */
+.home-time {
+  text-align: center;
+  margin-bottom: 1rem;
+}

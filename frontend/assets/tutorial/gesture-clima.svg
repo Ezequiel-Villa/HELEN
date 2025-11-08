@@ -1,0 +1,33 @@
+<svg width="360" height="260" viewBox="0 0 360 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg-gradient" x1="40" y1="20" x2="320" y2="240" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0F1C2F" />
+      <stop offset="0.5" stop-color="#1A2E52" />
+      <stop offset="1" stop-color="#12213B" />
+    </linearGradient>
+    <linearGradient id="hand-gradient" x1="130" y1="40" x2="250" y2="220" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7DE3FF" />
+      <stop offset="0.5" stop-color="#6A5CFF" />
+      <stop offset="1" stop-color="#FF2E88" />
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(180 230) rotate(90) scale(120 220)">
+      <stop offset="0" stop-color="#6EE8FF" stop-opacity="0.45" />
+      <stop offset="1" stop-color="#6EE8FF" stop-opacity="0" />
+    </radialGradient>
+    <filter id="shadow" x="70" y="40" width="220" height="190" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#001A2F" flood-opacity="0.55" />
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="360" height="260" rx="32" fill="url(#bg-gradient)" />
+  <rect x="0" y="0" width="360" height="260" rx="32" fill="url(#glow)" />
+  <g filter="url(#shadow)">
+    <path d="M140 54c-11 0-20 9-20 20v70l-17-11c-8-6-20-3-26 6-6 9-3 21 6 27l41 26c6 4 13 6 20 6h82c17 0 30-13 30-30v-58c0-11-9-20-20-20s-20 9-20 20v28h-12V78c0-11-9-20-20-20s-20 9-20 20v66h-12V74c0-11-9-20-20-20z" fill="url(#hand-gradient)" />
+  </g>
+  <g opacity="0.75">
+    <circle cx="255" cy="78" r="28" fill="#FFD271" />
+    <circle cx="236" cy="96" r="26" fill="#F6F7FB" />
+    <circle cx="266" cy="100" r="22" fill="#F6F7FB" />
+    <circle cx="220" cy="104" r="20" fill="#E5EEFF" />
+  </g>
+  <path d="M94 190c0 12 28 22 86 22s86-10 86-22-28-22-86-22-86 10-86 22z" fill="#081124" fill-opacity="0.45" />
+</svg>

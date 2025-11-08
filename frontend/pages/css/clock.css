@@ -1,0 +1,536 @@
+/* ===========================
+   HELEN · CLOCK PAGE
+   =========================== */
+
+/* Layout base: centrado, sin scroll extra */
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+.header {
+    height: 24px;
+}
+
+/* separador fino superior */
+
+/* ---------- Botón “Inicio” (arriba-izquierda) ---------- */
+.back-home-btn {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 10;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--card-border);
+    background: linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .14));
+    color: var(--fg);
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform var(--t-fast) ease, box-shadow var(--t-fast) ease, border-color var(--t-fast) ease;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, .18);
+}
+
+.back-home-btn .arrow {
+    font-weight: 600;
+    font-size: 16px
+}
+
+@media (hover: hover) {
+    .back-home-btn:hover {
+        transform: translateY(-2px);
+        border-color: rgba(190, 210, 230, .22);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, .22);
+    }
+}
+
+/* ---------- Panel del reloj ---------- */
+.clock {
+    width: min(1160px, 92vw);
+    margin: 68px auto 26px;
+    padding: 28px 20px 26px;
+    text-align: center;
+    color: var(--fg);
+    border-radius: var(--r-lg);
+    border: 1px solid var(--card-border);
+    background: linear-gradient(180deg, var(--card-top), var(--card-bot));
+    box-shadow: var(--shadow-card);
+}
+
+/* Selector de ciudad */
+.city-selector {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.custom-select-container {
+    position: relative;
+    width: 280px;
+}
+
+.custom-select {
+    appearance: none;
+    width: 100%;
+    padding: 10px 40px 10px 14px;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--card-border);
+    background: rgba(255, 255, 255, .06);
+    color: var(--fg);
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color var(--t-fast) ease, box-shadow var(--t-fast) ease, background-color var(--t-fast) ease;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, .16) inset;
+}
+
+.custom-select:focus {
+    outline: none;
+    border-color: rgba(190, 210, 230, .28)
+}
+
+@media (hover: hover) {
+    .custom-select:hover {
+        background: rgba(255, 255, 255, .08)
+    }
+}
+
+.select-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--fg);
+    opacity: .9;
+    pointer-events: none;
+}
+
+/* Hora y fecha */
+.clock-item {
+    font-size: clamp(48px, 10vw, 120px);
+    line-height: .95;
+    font-weight: 300;
+    color: var(--fg-strong);
+    text-shadow: 0 0 22px rgba(0, 200, 255, .08);
+    margin: 8px 0 6px;
+}
+
+.date-item {
+    font-size: 18px;
+    color: rgba(240, 247, 255, .86);
+    text-transform: capitalize;
+    margin-bottom: 10px;
+}
+
+/* Botón cambiar formato */
+.toggle-format-btn {
+    margin-top: 8px;
+    padding: 10px 16px;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--card-border);
+    background: rgba(255, 255, 255, .08);
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform var(--t-fast) ease, box-shadow var(--t-fast) ease, border-color var(--t-fast) ease;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, .18);
+}
+
+@media (hover: hover) {
+    .toggle-format-btn:hover {
+        transform: translateY(-1px);
+        border-color: rgba(190, 210, 230, .22);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, .22);
+    }
+}
+
+/* ---------- Sección “Funciones” ---------- */
+.clock-functions {
+    width: min(1160px, 92vw);
+    margin: 0 auto 34px;
+}
+
+#funciones-title {
+    /* lo usas como sr-only en tu HTML */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.functions-panel {
+    display: grid;
+}
+
+.functions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    gap: 26px;
+}
+
+/* Tarjetas */
+.qcard {
+    display: grid;
+    place-content: center;
+    gap: 10px;
+    text-align: center;
+    height: 184px;
+    /* alturas iguales */
+    border-radius: var(--r-md);
+    border: 1px solid var(--card-border);
+    background: linear-gradient(180deg, var(--card-top), var(--card-bot));
+    box-shadow: var(--shadow-tile);
+    color: var(--fg);
+    transition: transform var(--t-fast) ease, border-color var(--t-fast) ease, box-shadow var(--t-fast) ease;
+
+}
+
+@media (hover: hover) {
+    .qcard:hover {
+        transform: translateY(-4px);
+        border-color: rgba(190, 210, 230, .22);
+        box-shadow: 0 28px 64px rgba(0, 0, 0, .38)
+    }
+}
+
+.qcard:active {
+    transform: translateY(-1px)
+}
+
+.qcard-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 2px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: radial-gradient(100% 100% at 50% 0%, rgba(0, 212, 255, .14), rgba(0, 212, 255, .06));
+    color: var(--blue-a);
+    filter: drop-shadow(0 12px 24px rgba(0, 212, 255, .18));
+}
+
+.qcard-title {
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: .2px;
+    font-size: 18px;
+}
+
+.qcard-subtitle {
+    color: rgba(240, 247, 255, .86);
+    font-size: 13px;
+}
+
+/* Estado seleccionado (glow celeste) */
+.qcard.is-selected {
+    border-color: rgba(0, 212, 255, .35);
+    box-shadow: 0 0 0 6px rgba(0, 212, 255, .08), 0 0 0 16px rgba(0, 212, 255, .06), 0 26px 60px rgba(0, 0, 0, .38);
+    transform: scale(1.015);
+}
+
+.qcard:hover {
+  transform: translateY(-5px);
+  background: linear-gradient(145deg, rgba(40, 60, 90, 0.9), rgba(25, 40, 60, 0.6));
+  box-shadow: 0 0 40px rgba(0, 150, 255, 0.2);
+}
+
+.qcard:hover i {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(0, 180, 255, 0.6);
+}
+/* Leyenda inferior (como en la maqueta) */
+.clock-functions::after {
+    content: "Selecciona una función para comenzar";
+    display: block;
+    margin: 22px auto 0;
+    padding: 12px 16px;
+    width: fit-content;
+    color: rgba(240, 247, 255, .86);
+    background: linear-gradient(180deg, var(--card-top), var(--card-bot));
+    border: 1px solid var(--card-border);
+    border-radius: var(--r-md);
+    box-shadow: var(--shadow-tile);
+    font-size: 14px;
+}
+
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 980px) {
+    .functions-grid {
+        grid-template-columns: repeat(2, minmax(220px, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .clock {
+        padding: 24px 16px;
+    }
+
+    .functions-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .qcard {
+        height: 172px;
+    }
+
+    .back-home-btn {
+        top: 14px;
+        left: 14px;
+        padding: 7px 12px;
+    }
+}
+
+/* La tarjeta del reloj será el contenedor de referencia del botón */
+.clock {
+    position: relative;
+    /* <- importante */
+}
+
+/* Botón Inicio dentro de la tarjeta, arriba-derecha */
+.clock .back-home-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--card-border);
+    background: linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .14));
+    color: var(--fg);
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform var(--t-fast) ease, box-shadow var(--t-fast) ease, border-color var(--t-fast) ease;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, .18);
+}
+
+.clock .back-home-btn .arrow {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+@media (hover: hover) {
+    .clock .back-home-btn:hover {
+        transform: translateY(-2px);
+        border-color: rgba(190, 210, 230, .22);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, .22);
+    }
+}
+
+/* Select de ciudad – usa variables globales */
+.custom-select-container {
+    position: relative;
+    width: 280px;
+}
+
+.custom-select {
+    appearance: none;
+    width: 100%;
+    padding: 10px 40px 10px 14px;
+    border-radius: var(--select-radius);
+    border: 1px solid var(--select-border);
+    background: var(--select-bg);
+    color: var(--select-fg);
+    font-size: 14px;
+    box-shadow: var(--select-shadow);
+    cursor: pointer;
+    transition: border-color var(--t-fast) ease, background-color var(--t-fast) ease, box-shadow var(--t-fast) ease;
+}
+
+.custom-select:hover {
+    background: var(--select-hover-bg);
+}
+
+.custom-select:focus {
+    outline: none;
+    border-color: var(--select-focus-border);
+}
+
+.select-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--fg);
+    opacity: .9;
+    pointer-events: none;
+}
+
+/* Colores del popup de opciones (soporte bueno en Chromium/Firefox) */
+.custom-select option {
+    background: var(--select-popup-bg);
+    color: var(--select-popup-fg);
+}
+
+.back-button {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--r-sm, 12px);
+    border: 1px solid var(--card-border, rgba(160, 190, 220, .14));
+    background: rgba(255, 255, 255, .06);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: transform .16s ease, background .2s ease, border-color .2s ease;
+}
+
+.back-button i {
+    font-size: 18px;
+    opacity: .9;
+    color: #fff;
+}
+
+.back-button:hover {
+    transform: translateY(-1px);
+    background: rgba(255, 255, 255, .1);
+    border-color: rgba(190, 210, 230, .22);
+}
+
+/* Scrollbar del popup (Chromium) – opcional, bonito */
+.custom-select::-webkit-scrollbar {
+    width: 10px
+}
+
+.custom-select::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, .18);
+    border-radius: 6px;
+}
+
+.custom-select::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, .06);
+}
+
+/* Tarjetas: apila título y subtítulo (no en línea) */
+.qcard-text {
+    text-align: center;
+}
+
+.qcard-title {
+    display: block;
+    color: #fff;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.qcard-subtitle {
+    display: block;
+    margin-top: 6px;
+    font-size: 13px;
+    color: rgba(240, 247, 255, .86);
+}
+
+/* ===== PATCH: Inicio arriba-derecha dentro de la tarjeta ===== */
+.clock {
+    position: relative;
+}
+
+/* referencia para posicionar */
+
+.clock>.back-home-btn {
+    position: absolute !important;
+    top: 12px !important;
+    left: 12px !important;
+    right: auto !important;
+    bottom: auto !important;
+
+    /* Evita que se estire a lo ancho por reglas globales */
+    display: inline-flex !important;
+    width: auto !important;
+    max-width: none !important;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box;
+
+    padding: 8px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, .14);
+    background: rgba(10, 18, 34, .72);
+    color: #eaf3ff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    z-index: 10;
+
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, .18);
+}
+
+.clock>.back-home-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, .22);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, .22);
+}
+
+.clock>.back-home-btn .arrow {
+    font-size: 16px;
+    font-weight: 600
+}
+
+/* separa el select del botón flotante para que no se toquen */
+.city-selector {
+    margin-top: 40px;
+}
+
+/* ===== Subtítulos de tarjetas debajo del título ===== */
+.qcard-text {
+    text-align: center;
+}
+
+.qcard-title {
+    display: block;
+    font-weight: 700;
+    font-size: 18px;
+    color: #fff;
+}
+
+.qcard-subtitle {
+    display: block;
+    margin-top: 6px;
+    font-size: 13px;
+    color: rgba(240, 247, 255, .86);
+}
+
+/* === Iconos de tarjetas (igual que Clima) === */
+/* Toma colores/vars de globals.css */
+.qcard-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 18px;
+    display: grid;
+    place-items: center;
+    /* mismo relleno azul que Clima */
+    background: radial-gradient(60% 60% at 30% 30%, var(--blue-a), var(--blue-b));
+    box-shadow: 0 12px 26px rgba(46, 107, 255, .35);
+    transition: transform var(--t-fast) ease, box-shadow var(--t-fast) ease, filter var(--t-fast) ease;
+}
+
+/* color/tamaño del pictograma dentro del “chip” */
+.qcard-icon i,
+.qcard-icon svg {
+    color: #ecf6ff;
+    font-size: 30px;
+    /* ajusta si quieres el pictograma más grande/pequeño */
+}
+
+/* pequeño lift en hover para todo el card + icono */
+.qcard:hover .qcard-icon {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px rgba(46, 107, 255, .40);
+}

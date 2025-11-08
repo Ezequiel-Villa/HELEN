@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HELEN – Información</title>
+
+  <!-- Estilos base del proyecto -->
+  <link rel="stylesheet" href="../../css/globals.css" />
+  <!-- Íconos (mismo CDN que settings) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <!-- Estilos locales de esta pantalla -->
+  <link rel="stylesheet" href="../css/info.css" />
+</head>
+
+<body>
+  <main class="info-wrap raspberry-fit-root" data-raspberry-fit-root>
+    <!-- =============== MENÚ (2x2) =============== -->
+    <section id="menu" class="info-view is-active" data-title="Información">
+      <header class="info-header">
+        <button class="back-button" onclick="window.location.href='settings.html'">
+          <i class="bi bi-arrow-left"></i>
+        </button>
+        <div class="title-col">
+          <h1>Información</h1>
+          <p class="subtitle">Conoce más sobre HELEN y nuestro equipo</p>
+        </div>
+      </header>
+
+      <div class="info-grid">
+        <a class="qcard" href="#introduccion">
+          <span class="qcard__icon" aria-hidden="true"><i class="bi bi-book"></i></span>
+          <span class="qcard__title">Introducción</span>
+          <span class="qcard__subtitle">Conoce más sobre HELEN</span>
+        </a>
+
+        <a class="qcard" href="#tecnologias">
+          <span class="qcard__icon" aria-hidden="true"><i class="bi bi-cpu"></i></span>
+          <span class="qcard__title">Tecnologías</span>
+          <span class="qcard__subtitle">Stack tecnológico utilizado</span>
+        </a>
+
+        <a class="qcard" href="#equipo">
+          <span class="qcard__icon" aria-hidden="true"><i class="bi bi-people"></i></span>
+          <span class="qcard__title">Equipo de desarrollo</span>
+          <span class="qcard__subtitle">Nuestro equipo de trabajo</span>
+        </a>
+
+        <a class="qcard" href="#personalization">
+          <span class="qcard__icon" aria-hidden="true"><i class="bi bi-tablet-landscape"></i></span>
+          <span class="qcard__title">Personalización</span>
+          <span class="qcard__subtitle">Colores, tipografía y rendimiento global</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- =============== INTRODUCCIÓN =============== -->
+    <section id="introduccion" class="info-view" data-title="Introducción">
+      <header class="info-header">
+        <button class="back-button" onclick="window.location.href='#menu'">
+          <i class="bi bi-arrow-left"></i>
+        </button>
+        <div class="title-col">
+          <h1>Introducción</h1>
+          <p class="subtitle">Detalles y recursos adicionales</p>
+        </div>
+      </header>
+
+      <div class="panel">
+        <p>
+          HELEN es un asistente virtual interactivo enfocado en mejorar la accesibilidad de personas sordas,
+          proporcionando herramientas visuales como reloj, clima y avisos importantes integrados.
+        </p>
+      </div>
+
+      <div class="panel">
+        <h2>Objetivos</h2>
+        <p>
+          Brindar una plataforma accesible e inclusiva para personas con discapacidad auditiva mediante
+          la integración de herramientas visuales, interpretación de señas y avisos importantes integrados.
+        </p>
+      </div>
+    </section>
+
+    <!-- =============== TECNOLOGÍAS =============== -->
+    <section id="tecnologias" class="info-view" data-title="Tecnologías">
+      <header class="info-header">
+        <button class="back-button" onclick="window.location.href='#menu'">
+          <i class="bi bi-arrow-left"></i>
+        </button>
+        <div class="title-col">
+          <h1>Tecnologías</h1>
+          <p class="subtitle">Detalles y recursos adicionales</p>
+        </div>
+      </header>
+
+      <div class="panel">
+
+        <p>HELEN ha sido desarrollado utilizando tecnologías web e IA para ofrecer una experiencia óptima.</p>
+
+        <div class="tech-grid">
+          <div class="tech-pill"><span class="dot"></span>React.js + Typescript</div>
+          <div class="tech-pill"><span class="dot"></span>Node.js</div>
+          <div class="tech-pill"><span class="dot"></span>Streaming Azure</div>
+          <div class="tech-pill"><span class="dot"></span>MongoDB</div>
+          <div class="tech-pill"><span class="dot"></span>Traducción API</div>
+          <div class="tech-pill"><span class="dot"></span>Bootstrap</div>
+          <div class="tech-pill"><span class="dot"></span>Señas 3D</div>
+          <div class="tech-pill"><span class="dot"></span>Función Sígnar</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== EQUIPO =============== -->
+    <section id="equipo" class="info-view" data-title="Equipo de desarrollo">
+      <header class="info-header">
+        <button class="back-button" onclick="window.location.href='#menu'">
+          <i class="bi bi-arrow-left"></i>
+        </button>
+        <div class="title-col">
+          <h1>Equipo de desarrollo</h1>
+          <p class="subtitle">Detalles y recursos adicionales</p>
+        </div>
+      </header>
+
+      <div class="panel">
+        <p> Nuestro equipo multidisciplinario está compuesto por profesionales apasionados por crear soluciones
+          tecnológicas inclusivas.
+        </p>
+
+        <div class="team-grid">
+          <div class="team-card">
+            <div class="avatar">👤</div>
+            <div class="team-meta">
+              <h3>Juan Carlos Sánchez Delgado</h3>
+              <p>Director de Proyecto</p>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="avatar">👤</div>
+            <div class="team-meta">
+              <h3>Christian Uriel Huerta Ibarra</h3>
+              <p>Desarrollador Full Stack</p>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="avatar">👤</div>
+            <div class="team-meta">
+              <h3>Hugo Soldevilla Gómez Preciado</h3>
+              <p>Arquitecto de Software</p>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="avatar">👤</div>
+            <div class="team-meta">
+              <h3>Walter Reynaldo Calzada Contreras</h3>
+              <p>Ingeniero de Sistemas</p>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="avatar">👤</div>
+            <div class="team-meta">
+              <h3>Erick Manuel Flores García</h3>
+              <p>Especialista en UX/UI</p>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="avatar">👤</div>
+            <div class="team-meta">
+              <h3>Luis Ángel López García</h3>
+              <p>Desarrollador Backend</p>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="avatar">👤</div>
+            <div class="team-meta">
+              <h3>Abel Lázaro Bárcenas Juárez</h3>
+              <p>Analista de Sistemas</p>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="avatar">👤</div>
+            <div class="team-meta">
+              <h3>Arlet Monserrat Martínez Millán</h3>
+              <p>Diseñadora UI/UX</p>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="avatar">⭐</div>
+            <div class="team-meta">
+              <h3>Isaac Alexander Rubio Velarde</h3>
+              <p>Diseñador UI/UX • Backend • Integración Front/Back y Analytics</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== PERSONALIZACIÓN =============== -->
+    <section id="personalization" class="info-view" data-title="Personalización">
+      <header class="info-header">
+        <button class="back-button" onclick="window.location.href='#menu'">
+          <i class="bi bi-arrow-left"></i>
+        </button>
+        <div class="title-col">
+          <h1>Personalización</h1>
+          <p class="subtitle">Configura colores, tipografía y rendimiento global</p>
+        </div>
+      </header>
+
+      <div class="panel personalization-panel">
+        <h2>Colores de interfaz</h2>
+        <p>Elige una combinación cromática para todos los módulos de HELEN.</p>
+        <div class="color-picker" role="radiogroup" aria-label="Tema de color" data-theme-color-picker>
+          <button class="color-chip" type="button" role="radio" data-theme="blue" aria-checked="false" tabindex="0">
+            <span class="color-chip__swatch" style="--chip-color: #0b1220"></span>
+            <span class="color-chip__label">Azul</span>
+          </button>
+          <button class="color-chip" type="button" role="radio" data-theme="red" aria-checked="false" tabindex="-1">
+            <span class="color-chip__swatch" style="--chip-color: #200b13"></span>
+            <span class="color-chip__label">Rojo</span>
+          </button>
+          <button class="color-chip" type="button" role="radio" data-theme="green" aria-checked="false" tabindex="-1">
+            <span class="color-chip__swatch" style="--chip-color: #0b2016"></span>
+            <span class="color-chip__label">Verde</span>
+          </button>
+          <button class="color-chip" type="button" role="radio" data-theme="purple" aria-checked="false" tabindex="-1">
+            <span class="color-chip__swatch" style="--chip-color: #1a0b2b"></span>
+            <span class="color-chip__label">Morado</span>
+          </button>
+          <button class="color-chip" type="button" role="radio" data-theme="pink" aria-checked="false" tabindex="-1">
+            <span class="color-chip__swatch" style="--chip-color: #260b1d"></span>
+            <span class="color-chip__label">Rosa</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="panel personalization-panel">
+        <h2>Tamaño de letra</h2>
+        <p>Ajusta la escala base de tipografía para toda la aplicación.</p>
+        <div class="font-scale-picker" role="radiogroup" aria-label="Tamaño de letra" data-font-scale-picker>
+          <button class="font-chip" type="button" role="radio" data-scale="small" aria-checked="false" tabindex="0">
+            <span class="font-chip__title">Pequeña</span>
+            <span class="font-chip__desc">Contenido más compacto</span>
+          </button>
+          <button class="font-chip" type="button" role="radio" data-scale="normal" aria-checked="false" tabindex="-1">
+            <span class="font-chip__title">Normal</span>
+            <span class="font-chip__desc">Equilibrio para escritorio y pantallas táctiles</span>
+          </button>
+          <button class="font-chip" type="button" role="radio" data-scale="large" aria-checked="false" tabindex="-1">
+            <span class="font-chip__title">Grande</span>
+            <span class="font-chip__desc">Texto más legible a distancia</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="panel personalization-panel">
+        <h2>Modo rendimiento</h2>
+        <p>Desactiva animaciones y transiciones cuando necesites priorizar desempeño.</p>
+        <div class="performance-toggle" data-performance-toggle-wrapper>
+          <label class="switch-toggle">
+            <input type="checkbox" data-performance-toggle />
+            <span class="switch-track" aria-hidden="true"></span>
+            <span class="switch-label" data-performance-label>Animaciones activas</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="panel mode-panel">
+        <h2>Ajuste táctil</h2>
+        <p>Amplía tipografía y espacios táctiles para pantallas de 7&quot; y kioskos.</p>
+        <div class="mode-toggle-group">
+          <div class="mode-status" data-mode-status aria-live="polite">Interfaz actual: Estándar</div>
+          <button class="mode-toggle" type="button" data-mode-toggle>Activar ajuste táctil</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="../../jsSignHandler/SocketIO.js"></script>
+  <script src="../../jsSignHandler/eventConnector.js"></script>
+  <script src="../../jsSignHandler/actions.js"></script>
+  <script src="../../jsSignHandler/loadingScreenLoader.js"></script>
+  <script src="../../ui/notifications/notifications.js" defer></script>
+  <script src="../jsFrontend/alarm-core.js" defer></script>
+
+  <!-- Navegación por hash (igual que antes, sin tocar backend) -->
+  <script>
+    (function () {
+      const views = [...document.querySelectorAll('.info-view')];
+      const title = (v) => v?.dataset?.title || 'Información';
+      const modeStatus = document.querySelector('[data-mode-status]');
+      const modeButton = document.querySelector('[data-mode-toggle]');
+      const modeHelper = window.HelenDisplayMode;
+
+      const themeHelper = window.HelenPersonalization && window.HelenPersonalization.theme;
+      const colorPicker = document.querySelector('[data-theme-color-picker]');
+      const colorButtons = colorPicker ? Array.from(colorPicker.querySelectorAll('[data-theme]')) : [];
+
+      const fontHelper = window.HelenPersonalization && window.HelenPersonalization.fontScale;
+      const fontPicker = document.querySelector('[data-font-scale-picker]');
+      const fontButtons = fontPicker ? Array.from(fontPicker.querySelectorAll('[data-scale]')) : [];
+
+      const performanceHelper = window.HelenPersonalization && window.HelenPersonalization.performance;
+      const performanceToggle = document.querySelector('[data-performance-toggle]');
+      const performanceLabel = document.querySelector('[data-performance-label]');
+
+      const updateModeUI = (mode) => {
+        const normalized = (mode || '').toLowerCase() === 'raspberry' ? 'raspberry' : 'windows';
+        if (modeStatus) {
+          modeStatus.textContent = normalized === 'raspberry'
+            ? 'Interfaz actual: Táctil'
+            : 'Interfaz actual: Estándar';
+        }
+        if (modeButton) {
+          modeButton.textContent = normalized === 'raspberry'
+            ? 'Volver a vista estándar'
+            : 'Activar ajuste táctil';
+        }
+      };
+
+      const updateThemeSelection = (theme) => {
+        if (!colorButtons.length) {
+          return;
+        }
+        let hasActive = false;
+        colorButtons.forEach((button) => {
+          const isSelected = button.dataset.theme === theme;
+          button.classList.toggle('is-selected', isSelected);
+          button.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+          button.setAttribute('tabindex', isSelected ? '0' : '-1');
+          if (isSelected) {
+            hasActive = true;
+          }
+        });
+        if (!hasActive) {
+          const [first] = colorButtons;
+          if (first) {
+            first.setAttribute('tabindex', '0');
+          }
+        }
+      };
+
+      const updateFontSelection = (scale) => {
+        if (!fontButtons.length) {
+          return;
+        }
+        let hasActive = false;
+        fontButtons.forEach((button) => {
+          const isSelected = button.dataset.scale === scale;
+          button.classList.toggle('is-selected', isSelected);
+          button.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+          button.setAttribute('tabindex', isSelected ? '0' : '-1');
+          if (isSelected) {
+            hasActive = true;
+          }
+        });
+        if (!hasActive) {
+          const [first] = fontButtons;
+          if (first) {
+            first.setAttribute('tabindex', '0');
+          }
+        }
+      };
+
+      const updatePerformanceUI = (enabled) => {
+        const state = !!enabled;
+        if (performanceToggle) {
+          performanceToggle.checked = state;
+        }
+        if (performanceLabel) {
+          performanceLabel.textContent = state ? 'Animaciones desactivadas' : 'Animaciones activas';
+        }
+      };
+
+      if (modeButton && modeHelper) {
+        modeButton.addEventListener('click', () => {
+          const nextMode = modeHelper.current() === 'raspberry' ? 'windows' : 'raspberry';
+          modeHelper.set(nextMode);
+        });
+      }
+
+      if (colorPicker && colorButtons.length && themeHelper) {
+        colorButtons.forEach((button) => {
+          button.addEventListener('click', () => {
+            const theme = button.dataset.theme;
+            if (!theme) {
+              return;
+            }
+            console.debug('[Helen] Cambio de tema solicitado:', theme);
+            const applied = themeHelper.set(theme);
+            updateThemeSelection(applied);
+          });
+
+          button.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              button.click();
+            }
+          });
+        });
+
+        updateThemeSelection(themeHelper.get());
+
+        window.addEventListener('helen:theme-color', (event) => {
+          const theme = event?.detail?.theme;
+          if (theme) {
+            updateThemeSelection(theme);
+          }
+        });
+      }
+
+      if (fontPicker && fontButtons.length && fontHelper) {
+        fontButtons.forEach((button) => {
+          button.addEventListener('click', () => {
+            const scale = button.dataset.scale;
+            if (!scale) {
+              return;
+            }
+            console.debug('[Helen] Cambio de tamaño de letra solicitado:', scale);
+            const applied = fontHelper.set(scale);
+            updateFontSelection(applied);
+          });
+
+          button.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              button.click();
+            }
+          });
+        });
+
+        updateFontSelection(fontHelper.get());
+
+        window.addEventListener('helen:font-scale', (event) => {
+          const scale = event?.detail?.scale;
+          if (scale) {
+            updateFontSelection(scale);
+          }
+        });
+      }
+
+      if (performanceToggle && performanceHelper) {
+        performanceToggle.addEventListener('change', () => {
+          performanceHelper.set(performanceToggle.checked);
+        });
+
+        updatePerformanceUI(performanceHelper.get());
+
+        window.addEventListener('helen:performance-mode', (event) => {
+          if (event && typeof event.detail?.enabled === 'boolean') {
+            updatePerformanceUI(event.detail.enabled);
+          }
+        });
+      }
+
+      if (typeof window !== 'undefined') {
+        window.addEventListener('helen:display-mode', (event) => {
+          const mode = event?.detail?.mode;
+          updateModeUI(mode);
+        });
+        try {
+          window.dispatchEvent(new CustomEvent('helen:display-mode:request-sync'));
+        } catch (error) {
+          window.dispatchEvent({ type: 'helen:display-mode:request-sync' });
+        }
+      }
+
+      updateModeUI(modeHelper ? modeHelper.current() : 'windows');
+
+      function showView(hash) {
+        const id = (hash || '#menu').replace('#', '');
+        views.forEach((v) => v.classList.toggle('is-active', v.id === id));
+        document.title = 'HELEN – ' + title(document.getElementById(id));
+      }
+
+      window.addEventListener('hashchange', () => showView(location.hash));
+      showView(location.hash || '#menu');
+    })();
+  </script>
+</body>
+
+</html>

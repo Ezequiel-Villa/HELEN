@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1024, initial-scale=1.0" />
+  <title>Ajustes</title>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="../css/settings.css" />
+  <link rel="stylesheet" href="../../css/globals.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+</head>
+
+<body>
+  <div class="container raspberry-fit-root" data-raspberry-fit-root>
+    <!-- Panel izquierdo (logo / back home) -->
+    <div class="left-panel">
+      <div class="header">
+
+      </div>
+    </div>
+
+    <!-- Panel derecho (contenido de ajustes) -->
+    <div class="right-panel">
+      <div class="settings-content">
+        <!-- Título y subtítulo -->
+        <div class="settings-title">
+          <button class="back-button" onclick="window.location.href='../../index.html'">
+            <i class="bi bi-arrow-left"></i>
+          </button>
+          <h1>Configuración</h1>
+        </div>
+
+        <p class="settings-subtitle">Personaliza HELEN según tus necesidades</p>
+
+        <!-- Grid de botones/cards -->
+        <div class="settings-buttons">
+          <div class="settings-button wifi" id="open-wifi-modal" role="button" tabindex="0"
+            onclick="window.location.href='../settings/wifi.html'">
+            <i class="bi bi-wifi"></i>
+            <div class="settings-button-text">
+              <span class="settings-button-title">Internet y Red</span>
+              <span class="settings-button-subtitle">Configurar conexiones WiFi</span>
+            </div>
+          </div>
+
+          <div class="settings-button help" onclick="window.location.href='../settings/help.html'">
+            <i class="bi bi-question-circle"></i>
+            <div class="settings-button-text">
+              <span class="settings-button-title">Ayuda</span>
+              <span class="settings-button-subtitle">Tutoriales y soporte técnico</span>
+            </div>
+          </div>
+
+          <div class="settings-button info" onclick="window.location.href='../settings/info.html'">
+            <i class="bi bi-info-circle"></i>
+            <div class="settings-button-text">
+              <span class="settings-button-title">Información</span>
+              <span class="settings-button-subtitle">Acerca de HELEN y equipo</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Línea y pie de versión -->
+        <hr class="settings-separator" />
+        <div class="settings-version">
+          <div>HELEN v2.1.0</div>
+          <div class="settings-version-sub">Asistente Virtual para Comunidad Sorda</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ⚠️ Se eliminó el modal de WiFi para migrarlo a wifi.html
+       y se retiró cualquier JS que lo abría/cerraba. -->
+
+  <!-- Scripts base (orden conservado). 
+       NOTA: Se quitó ../../jsWifi/controlWifi.js aquí para no causar errores
+       al no existir el modal; ese script irá cargado en wifi.html. -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="../../jsSignHandler/SocketIO.js"></script>
+  <script src="../../jsSignHandler/eventConnector.js"></script>
+  <script src="../../jsSignHandler/actions.js"></script>
+  <script src="../../jsSignHandler/loadingScreenLoader.js"></script>
+  <script src="../../ui/notifications/notifications.js" defer></script>
+  <script src="../jsFrontend/alarm-core.js" defer></script>
+</body>
+
+</html>

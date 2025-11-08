@@ -1,0 +1,239 @@
+/* ================================
+   HELEN – SETTINGS (usa globals)
+   ================================ */
+
+/* --- Parámetros del layout de esta pantalla --- */
+:root{
+  --content-max: 1240px;     /* ancho del bloque centrado */
+  --cards-gap: 28px;
+  --card-w: 360px;           /* ancha (ajusta si quieres) */
+  --card-h: 270px;           /* bajita */
+}
+
+/* El fondo, tipografía y color base ya los pone globals.css (body). :contentReference[oaicite:1]{index=1} */
+
+/* ====== Estructura ====== */
+.container{
+  width: 100%;
+  min-height: 100svh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 36px 20px 28px;
+}
+
+.right-panel{
+  width: min(96%, var(--content-max));
+  margin: 0 auto;
+  position: relative;
+  z-index: 1; /* sobre los halos */
+}
+
+.right-panel h1{
+  margin: 0;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -.3px;
+  color: var(--fg-strong, #fff);
+}
+
+/* ====== Botón “Atrás” alineado al contenido ======
+   Lo fijamos a la misma guía izquierda del contenido */
+.back-button {
+  position: relative; /* ← ya no fijo */
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, .12);
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.10));
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-tile);
+  transition: transform var(--t-fast) ease, box-shadow var(--t-fast) ease, border-color var(--t-fast) ease;
+  margin-right: 14px; /* espacio entre la flecha y el título */
+}
+
+@media (hover:hover) {
+  .back-button:hover {
+    transform: translateY(-2px);
+    border-color: rgba(190,210,230,.22);
+    box-shadow: 0 18px 36px rgba(0,0,0,.28);
+  }
+}
+
+
+/* ====== Título y subtítulo ====== */
+.settings-content{ width: 100% }
+
+.settings-title{
+  margin: 24px 0 12px;
+}
+
+.settings-subtitle{
+  margin: 9px 0 0;
+  margin-left: 69px;
+  color: var(--fg-soft);
+  font-size: clamp(14px, 2.2vw, 18px);
+}
+
+/* ====== Fila de tarjetas (3 en horizontal) ====== */
+.settings-buttons{
+  width: 00%;
+  display: grid;
+  grid-template-columns: repeat(3, var(--card-w));
+  justify-content: space-between;      /* reparte para ocupar el ancho */
+  gap: var(--cards-gap);
+  margin-top: 18px;
+  margin: 50px;
+}
+
+/* ====== Tarjeta ====== */
+.settings-button{
+  width: var(--card-w);
+  height: var(--card-h);
+  border-radius: var(--r-lg);
+  background: linear-gradient(180deg, var(--card-top), var(--card-bot));
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-tile);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--fg);
+  cursor: pointer;
+  padding: 20px 24px;
+  transition: transform var(--t-fast) ease, border-color var(--t-fast) ease, box-shadow var(--t-fast) ease, background-color var(--t-fast) ease;
+  -webkit-tap-highlight-color: transparent;
+}
+/* Hover elegante como el resto del sistema */
+@media (hover:hover){
+  .settings-button:hover,
+  .settings-button:focus-visible{
+    transform: translateY(-4px);
+    border-color: rgba(190,210,230,.22);
+    outline: none;
+    box-shadow: 0 28px 64px rgba(0,0,0,.38);
+  }
+}
+
+.settings-button:hover {
+  transform: translateY(-5px);
+  background: linear-gradient(145deg, rgba(40, 60, 90, 0.9), rgba(25, 40, 60, 0.6));
+  box-shadow: 0 0 40px rgba(0, 150, 255, 0.2);
+}
+
+.settings-button i {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(0, 180, 255, 0.6);
+}
+/* Ícono cuadrado con el mismo “botón azul” global */
+.settings-button > i{
+  width: 84px; height: 84px;
+  border-radius: 20px;
+  display: grid; place-items: center;
+  background: radial-gradient(60% 60% at 30% 30%, var(--blue-a), var(--blue-b));
+  box-shadow: 0 12px 26px rgba(46,107,255,.35);
+  color: #ecf6ff;
+  font-size: 34px;
+  margin-bottom: 14px;
+} /* mismo patrón que quick-nav/dash-card en globals */ /* :contentReference[oaicite:2]{index=2} */
+
+/* Títulos SIEMPRE arriba y subtítulos debajo (no en línea) */
+.settings-button-text{
+  display: flex; flex-direction: column; gap: 6px;
+}
+.settings-button-title{
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: .2px;
+  font-size: clamp(18px, 2.6vw, 22px);
+}
+.settings-button-subtitle{
+  color: rgba(240,247,255,.86);
+  font-size: 13.5px;
+}
+
+/* ====== Separador + versión ====== */
+.settings-separator{
+  margin: 26px 0 14px;
+  border: none;
+  border-top: 1px solid rgba(190,210,230,.14);
+}
+.settings-version{
+  text-align: center;
+  color: var(--fg);
+  opacity: .86;
+  font-size: 14px;
+}
+.settings-version-sub{
+  margin-top: 6px;
+  color: var(--fg-soft);
+  font-size: 13px;
+}
+
+.container {
+  width: 100%;
+  min-height: 100svh;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* ⬅ centrado vertical */
+  padding: 36px 20px 28px;
+}
+
+
+/* ====== Responsivo (mantener proporciones) ====== */
+@media (max-width: 1240px){
+  :root{ --card-w: 340px }
+  .settings-buttons{ justify-content: space-around }
+}
+@media (max-width: 1120px){
+  :root{ --content-max: 1040px; --card-w: 320px }
+}
+@media (max-width: 1020px){
+  /* a partir de aquí permitimos 2x2 y luego 1x1 */
+  .settings-buttons{
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
+    justify-content: center;
+  }
+}
+@media (max-width: 700px){
+  .settings-buttons{
+    grid-template-columns: 1fr;
+    justify-content: center;
+  }
+  .settings-button{ width: 100% }
+}
+
+.settings-title {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* espacio entre flecha y texto */
+  margin: 24px 0 6px;
+}
+
+.back-button {
+  position: relative; /* ya no fixed */
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.10));
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-tile);
+  transition: transform var(--t-fast) ease, box-shadow var(--t-fast) ease, border-color var(--t-fast) ease;
+}
+
+@media (hover:hover) {
+  .back-button:hover {
+    transform: translateY(-2px);
+    border-color: rgba(190,210,230,.22);
+    box-shadow: 0 18px 36px rgba(0,0,0,.28);
+  }
+}
+

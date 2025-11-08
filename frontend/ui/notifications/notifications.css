@@ -1,0 +1,164 @@
+body.helen-global-modal-open{
+  overflow: hidden;
+}
+
+.helen-global-modal{
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(28px, 6vw, 54px);
+  background: rgba(8, 15, 28, .72);
+  backdrop-filter: blur(18px);
+  z-index: 100000;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--t-med, .25s) ease, visibility var(--t-med, .25s) ease;
+}
+
+.helen-global-modal.is-visible{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.helen-global-modal__card{
+  width: min(92vw, 460px);
+  border-radius: var(--r-lg, 26px);
+  background: linear-gradient(180deg, rgba(16,26,44,.96), rgba(12,20,34,.96));
+  border: 1px solid rgba(190,210,230,.18);
+  box-shadow: 0 26px 64px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.06);
+  padding: clamp(28px, 5vw, 36px) clamp(28px, 5vw, 38px) clamp(26px, 5vw, 34px);
+  display: grid;
+  gap: clamp(18px, 3vw, 24px);
+  text-align: center;
+  color: #fff;
+  transform: translateY(18px) scale(.96);
+  transition: transform var(--t-med, .25s) ease, opacity var(--t-med, .25s) ease;
+  position: relative;
+}
+
+.helen-global-modal.is-visible .helen-global-modal__card{
+  transform: translateY(0) scale(1);
+}
+
+.helen-global-modal__icon{
+  width: clamp(72px, 10vw, 92px);
+  height: clamp(72px, 10vw, 92px);
+  border-radius: 24px;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(85% 85% at 30% 20%, var(--blue-a, #5fe1ff), var(--blue-b, #2e6bff));
+  box-shadow: 0 18px 42px rgba(46,107,255,.38);
+  border: 1px solid rgba(255,255,255,.12);
+  color: #ecf6ff;
+  font-size: clamp(30px, 4vw, 36px);
+}
+
+.helen-global-modal[data-tone="alarm"] .helen-global-modal__icon{
+  background: radial-gradient(85% 85% at 30% 20%, #ffd76a, #ff9f2e);
+  box-shadow: 0 20px 48px rgba(255,159,46,.34);
+  color: #44260c;
+}
+
+.helen-global-modal__badge{
+  position: absolute;
+  top: clamp(18px, 3vw, 26px);
+  right: clamp(18px, 3vw, 26px);
+  min-width: 46px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(95,225,255,.18);
+  border: 1px solid rgba(95,225,255,.28);
+  color: rgba(220,240,255,.92);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: .4px;
+  display: none;
+}
+
+.helen-global-modal__badge.is-visible{
+  display: inline-flex;
+  justify-content: center;
+}
+
+.helen-global-modal__title{
+  margin: 0;
+  font-size: clamp(24px, 3.2vw, 30px);
+  font-weight: 700;
+  letter-spacing: .2px;
+  color: #fff;
+}
+
+.helen-global-modal__label{
+  margin: 0;
+  font-size: clamp(18px, 2.6vw, 20px);
+  font-weight: 600;
+  color: rgba(240,247,255,.9);
+}
+
+.helen-global-modal__detail{
+  margin: 0;
+  font-size: clamp(15px, 2.2vw, 17px);
+  color: rgba(228,238,255,.82);
+  line-height: 1.4;
+}
+
+.helen-global-modal__meta{
+  margin: 0;
+  font-size: 14px;
+  color: rgba(210,226,255,.66);
+}
+
+.helen-global-modal__status{
+  margin: 0;
+  font-size: 14px;
+  color: rgba(255,213,138,.92);
+  display: none;
+}
+
+.helen-global-modal__status.is-visible{
+  display: block;
+}
+
+.helen-global-modal__primary{
+  border: none;
+  border-radius: var(--r-md, 18px);
+  padding: clamp(14px, 2.6vw, 18px) clamp(28px, 6vw, 36px);
+  font-size: clamp(16px, 2.4vw, 18px);
+  font-weight: 700;
+  letter-spacing: .3px;
+  color: var(--bg, #0b1422);
+  background: linear-gradient(135deg, var(--blue-a, #5fe1ff), var(--blue-b, #2e6bff));
+  box-shadow: 0 24px 52px rgba(46,107,255,.42);
+  cursor: pointer;
+  transition: transform var(--t-fast, .16s) ease, box-shadow var(--t-fast, .16s) ease, filter var(--t-fast, .16s) ease;
+}
+
+.helen-global-modal__primary:disabled{
+  opacity: .7;
+  cursor: default;
+  box-shadow: none;
+}
+
+.helen-global-modal__primary:focus-visible{
+  outline: 2px solid rgba(95,225,255,.72);
+  outline-offset: 3px;
+}
+
+@media (hover:hover){
+  .helen-global-modal__primary:not(:disabled):hover{
+    transform: translateY(-2px);
+    box-shadow: 0 28px 60px rgba(46,107,255,.48);
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .helen-global-modal,
+  .helen-global-modal__card{
+    transition: none;
+  }
+}

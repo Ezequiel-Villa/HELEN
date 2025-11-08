@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1024, initial-scale=1.0" />
+  <title>Dispositivos IoT</title>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="../../css/globals.css" />
+  <link rel="stylesheet" href="../css/dispositivos.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+
+  <div class="devices-layout raspberry-fit-root" data-raspberry-fit-root>
+    <!-- Topbar -->
+    <div class="devices-topbar">
+      <div class="title-col">
+        <button class="back-button" onclick="window.location.href='../../index.html'">
+          <i class="bi bi-arrow-left"></i>
+        </button>
+        <div class="titles">
+          <h1 class="page-title">Dispositivos IoT</h1>
+          <p class="page-subtitle" id="devices-subtitle">No hay dispositivos conectados aún</p>
+        </div>
+      </div>
+
+      <button class="add-device-btn" onclick="showAddModal()">
+        <i class="bi bi-plus-lg"></i>
+        Agregar Dispositivo
+      </button>
+    </div>
+
+    <!-- Estado vacío -->
+    <section class="empty-state" id="emptyState">
+      <div class="empty-icon">
+        <i class="bi bi-house-door"></i>
+      </div>
+      <h2 class="empty-title">Sin dispositivos configurados</h2>
+      <p class="empty-text">
+        Conecta tus dispositivos inteligentes para controlarlos desde <strong>HELEN</strong>
+      </p>
+
+      <div class="benefits">
+        <div class="benefit-card">
+          <div class="benefit-icon"><i class="bi bi-wifi"></i></div>
+          <h3>Conexión Automática</h3>
+          <p>Detecta dispositivos en tu red</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-icon"><i class="bi bi-houses"></i></div>
+          <h3>Control Centralizado</h3>
+          <p>Maneja todo desde una app</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-icon plus"><i class="bi bi-plus"></i></div>
+          <h3>Fácil Configuración</h3>
+          <p>Agrega dispositivos en segundos</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lista de dispositivos (cuando existan) -->
+    <section id="deviceList" class="device-list" aria-live="polite">
+      <!-- Tu JS inyecta las tarjetas .device-card aquí -->
+    </section>
+
+    <div id="devicePagination" class="device-pagination" aria-live="polite"></div>
+  </div>
+
+  <!-- ===== Modales ===== -->
+
+  <!-- Eliminar -->
+  <div id="deleteModal" class="modal-backdrop" style="display:none;">
+    <div class="modal">
+      <div class="modal-title">Eliminar dispositivo</div>
+      <p>¿Estás seguro que deseas eliminar este dispositivo?</p>
+      <div class="modal-buttons">
+        <button class="modal-button cancel-button" onclick="hideDeleteModal()">Cancelar</button>
+        <button class="modal-button confirm-button" onclick="confirmDelete()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Editar -->
+  <div id="editModal" class="modal-backdrop" style="display:none;">
+    <div class="modal">
+      <div class="modal-title">Editar dispositivo</div>
+
+      <div class="edit-form">
+        <div class="form-group">
+          <div class="name-preview"><span id="deviceNamePreview">Selecciona ubicación y tipo</span></div>
+        </div>
+
+        <div class="form-group">
+          <label>Ubicación</label>
+          <div class="room-selector">
+            <div class="room-option" onclick="selectRoom(this,'Sala')" data-room="Sala">Sala</div>
+            <div class="room-option" onclick="selectRoom(this,'Cocina')" data-room="Cocina">Cocina</div>
+            <div class="room-option" onclick="selectRoom(this,'Dormitorio')" data-room="Dormitorio">Dormitorio</div>
+            <div class="room-option" onclick="selectRoom(this,'Baño')" data-room="Baño">Baño</div>
+            <div class="room-option" onclick="selectRoom(this,'Jardín')" data-room="Jardín">Jardín</div>
+            <div class="room-option" onclick="selectRoom(this,'Oficina')" data-room="Oficina">Oficina</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Tipo de dispositivo</label>
+          <div class="type-selector">
+            <div class="type-option" onclick="selectDeviceType(this,'Luz')" data-type="Luz">Luz</div>
+            <div class="type-option" onclick="selectDeviceType(this,'TV')" data-type="TV">TV</div>
+            <div class="type-option" onclick="selectDeviceType(this,'Altavoz')" data-type="Altavoz">Altavoz</div>
+            <div class="type-option" onclick="selectDeviceType(this,'Termostato')" data-type="Termostato">Termostato</div>
+            <div class="type-option" onclick="selectDeviceType(this,'Enchufe')" data-type="Enchufe">Enchufe</div>
+            <div class="type-option" onclick="selectDeviceType(this,'Puerta')" data-type="Puerta">Puerta</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Ícono del dispositivo</label>
+          <div class="icon-selector">
+            <div class="icon-option" onclick="selectIcon(this,'💡')">💡</div>
+            <div class="icon-option" onclick="selectIcon(this,'🌡️')">🌡️</div>
+            <div class="icon-option" onclick="selectIcon(this,'📺')">📺</div>
+            <div class="icon-option" onclick="selectIcon(this,'🔊')">🔊</div>
+            <div class="icon-option" onclick="selectIcon(this,'🎮')">🎮</div>
+            <div class="icon-option" onclick="selectIcon(this,'🚪')">🚪</div>
+            <div class="icon-option" onclick="selectIcon(this,'🔒')">🔒</div>
+            <div class="icon-option" onclick="selectIcon(this,'💧')">💧</div>
+            <div class="icon-option" onclick="selectIcon(this,'☕')">☕</div>
+            <div class="icon-option" onclick="selectIcon(this,'🔌')">🔌</div>
+            <div class="icon-option" onclick="selectIcon(this,'💻')">💻</div>
+            <div class="icon-option" onclick="selectIcon(this,'⏰')">⏰</div>
+            <div class="icon-option" onclick="selectIcon(this,'📱')">📱</div>
+            <div class="icon-option" onclick="selectIcon(this,'🎛️')">🎛️</div>
+            <div class="icon-option" onclick="selectIcon(this,'🖨️')">🖨️</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-buttons">
+        <button class="modal-button cancel-button" onclick="hideEditModal()">Cancelar</button>
+        <button class="modal-button save-button" onclick="saveDeviceChanges()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agregar -->
+  <div id="addModal" class="modal-backdrop" style="display:none;">
+    <div class="modal">
+      <div class="modal-title">Agregar nuevo dispositivo</div>
+
+      <div class="edit-form">
+        <div class="form-group">
+          <div class="name-preview"><span id="newDeviceNamePreview">Selecciona ubicación y tipo</span></div>
+        </div>
+
+        <div class="form-group">
+          <label>Ubicación</label>
+          <div class="room-selector">
+            <div class="room-option" onclick="selectAddRoom(this,'Sala')" data-room="Sala">Sala</div>
+            <div class="room-option" onclick="selectAddRoom(this,'Cocina')" data-room="Cocina">Cocina</div>
+            <div class="room-option" onclick="selectAddRoom(this,'Dormitorio')" data-room="Dormitorio">Dormitorio</div>
+            <div class="room-option" onclick="selectAddRoom(this,'Baño')" data-room="Baño">Baño</div>
+            <div class="room-option" onclick="selectAddRoom(this,'Jardín')" data-room="Jardín">Jardín</div>
+            <div class="room-option" onclick="selectAddRoom(this,'Oficina')" data-room="Oficina">Oficina</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Tipo de dispositivo</label>
+          <div class="type-selector">
+            <div class="type-option" onclick="selectAddDeviceType(this,'Luz')" data-type="Luz">Luz</div>
+            <div class="type-option" onclick="selectAddDeviceType(this,'TV')" data-type="TV">TV</div>
+            <div class="type-option" onclick="selectAddDeviceType(this,'Altavoz')" data-type="Altavoz">Altavoz</div>
+            <div class="type-option" onclick="selectAddDeviceType(this,'Termostato')" data-type="Termostato">Termostato</div>
+            <div class="type-option" onclick="selectAddDeviceType(this,'Enchufe')" data-type="Enchufe">Enchufe</div>
+            <div class="type-option" onclick="selectAddDeviceType(this,'Puerta')" data-type="Puerta">Puerta</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Ícono del dispositivo</label>
+          <div class="icon-selector" id="addIconSelector">
+            <div class="icon-option" onclick="selectAddIcon(this,'💡')">💡</div>
+            <div class="icon-option" onclick="selectAddIcon(this,'🌡️')">🌡️</div>
+            <div class="icon-option" onclick="selectAddIcon(this,'📺')">📺</div>
+            <div class="icon-option" onclick="selectAddIcon(this,'🔊')">🔊</div>
+            <div class="icon-option" onclick="selectAddIcon(this,'🎮')">🎮</div>
+            <div class="icon-option" onclick="selectAddIcon(this,'🚪')">🚪</div>
+            <div class="icon-option" onclick="selectAddIcon(this,'🔒')">🔒</div>
+            <div class="icon-option" onclick="selectAddIcon(this,'💧')">💧</div>
+            <div class="icon-option" onclick="selectAddIcon(this,'☕')">☕</div>
+            <div class="icon-option" onclick="selectAddIcon(this,'🔌')">🔌</div>
+            <div class="icon-option" onclick="selectAddIcon(this,'💻')">💻</div>
+            <div class="icon-option" onclick="selectAddIcon(this,'⏰')">⏰</div>
+            <div class="icon-option" onclick="selectAddIcon(this,'📱')">📱</div>
+            <div class="icon-option" onclick="selectAddIcon(this,'🎛️')">🎛️</div>
+            <div class="icon-option" onclick="selectAddIcon(this,'🖨️')">🖨️</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-buttons">
+        <button class="modal-button cancel-button" onclick="hideAddModal()">Cancelar</button>
+        <button class="modal-button save-button" onclick="addNewDevice()">Agregar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.7.7/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+
+  <script src="../../jsSignHandler/SocketIO.js"></script>
+  <script src="../../jsSignHandler/eventConnector.js"></script>
+  <script src="../../jsSignHandler/actions.js"></script>
+
+  <script src="../jsFrontend/devices.js"></script>
+  <script src="../jsControl/devicesControl.js"></script>
+
+  <script src="../../jsSignHandler/loadingScreenLoader.js"></script>
+  <script src="../../ui/notifications/notifications.js" defer></script>
+  <script src="../jsFrontend/alarm-core.js" defer></script>
+</body>
+</html>

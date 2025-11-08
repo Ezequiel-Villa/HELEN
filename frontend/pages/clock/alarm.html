@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alarmas</title>
+
+  <!-- Iconos -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Estilos del proyecto -->
+  <link rel="stylesheet" href="../../css/globals.css"/>
+  <link rel="stylesheet" href="../css/alarm.css"/>
+
+  <!-- Librerías que ya usas -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="../../ui/notifications/notifications.js" defer></script>
+  <script src="../jsFrontend/alarm-core.js" defer></script>
+
+</head>
+
+<body>
+  <div class="alarms-page">
+    <!-- Header superior (flecha, título, + Nueva Alarma) -->
+    <header class="alarms-header">
+      <button class="back-button" onclick="window.location.href='../clock/clock.html'">
+        <i class="bi bi-arrow-left"></i>
+      </button>
+      <h1>Alarmas</h1>
+      <button id="new-alarm-btn" class="primary-btn">
+        <i class="bi bi-plus-lg"></i> Nueva Alarma
+      </button>
+    </header>
+
+    <!-- Lista de alarmas (la pobla alarm.js) -->
+    <main class="alarms-list">
+      <!-- Estados iniciales -->
+      <div class="alarm-loading">
+        <i class="bi bi-arrow-repeat spinner"></i>
+        <p>Cargando alarmas...</p>
+      </div>
+      <div class="no-alarms-message" style="display:none;">
+        <i class="bi bi-bell-slash"></i>
+        <p>No tienes alarmas configuradas</p>
+      </div>
+      <!-- Aquí se insertarán las alarmas -->
+    </main>
+
+    <!-- Nota inferior -->
+    <footer class="alarms-footer">
+      <p>Las alarmas sonarán incluso cuando el dispositivo esté en modo silencio</p>
+    </footer>
+  </div>
+
+  <!-- Plantilla de tarjeta (compatible con alarm.js) -->
+  <template id="alarm-template">
+    <div class="alarm-card alarm-item">
+      <div class="alarm-left">
+        <div class="alarm-icon">
+          <i class="bi bi-bell"></i>
+        </div>
+        <div class="alarm-info">
+          <h2 class="alarm-time">00:00</h2>
+          <p class="alarm-name">Alarma</p>
+          <div class="alarm-days"><!-- L M X J V S D --></div>
+        </div>
+      </div>
+      <div class="alarm-right">
+        <button class="edit-btn" type="button" title="Editar">
+          <i class="bi bi-pencil"></i>
+        </button>
+        <button class="delete-alarm delete-btn" type="button" title="Eliminar">
+          <i class="bi bi-trash"></i>
+        </button>
+        <label class="switch" title="Activar/Desactivar">
+          <input type="checkbox" checked>
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </div>
+  </template>
+
+  <!-- Modal Crear/Editar Alarma -->
+  <div id="newAlarmModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Nueva Alarma</h2>
+        <button class="close-modal" type="button" aria-label="Cerrar">
+          <i class="bi bi-x"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <label for="alarm-time-input">Hora</label>
+        <input type="time" id="alarm-time-input"/>
+
+        <label for="alarm-label-input">Etiqueta</label>
+        <input type="text" id="alarm-label-input" placeholder="Ej: Levantarse"/>
+
+        <label for="modal-days">Días</label>
+        <div id="modal-days" class="day-selectors">
+          <span class="day" data-day="1">L</span>
+          <span class="day" data-day="2">M</span>
+          <span class="day" data-day="3">X</span>
+          <span class="day" data-day="4">J</span>
+          <span class="day" data-day="5">V</span>
+          <span class="day" data-day="6">S</span>
+          <span class="day" data-day="0">D</span>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="cancel-btn" type="button">Cancelar</button>
+        <button class="create-btn" type="button">Crear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Confirmación de Borrado -->
+  <div id="deleteConfirmModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>¿Eliminar alarma?</h2>
+        <button class="close-modal" type="button" aria-label="Cerrar" data-close-delete>
+          <i class="bi bi-x"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Esta acción no se puede deshacer.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="cancel-btn" type="button" data-cancel-delete>Cancelar</button>
+        <button class="create-btn" type="button" id="confirmDeleteBtn">Sí, eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenedor de Toast -->
+  <div id="helenToast" class="helen-toast" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Scripts del proyecto (compatibilidad backend) -->
+  <script src="../jsFrontend/alarm.js"></script>
+  <script src="../../jsSignHandler/SocketIO.js"></script>
+  <script src="../../jsSignHandler/eventConnector.js"></script>
+  <script src="../../jsSignHandler/actions.js"></script>
+  <script src="../../jsSignHandler/loadingScreenLoader.js"></script>
+</body>
+</html>

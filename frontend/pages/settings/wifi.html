@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1024, initial-scale=1.0" />
+  <title>Internet y Red</title>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="../../css/globals.css" />
+  <link rel="stylesheet" href="../css/wifi.css?v=3" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+</head>
+
+<body>
+  <div class="wifi-page">
+    <!-- Header -->
+    <header class="wifi-header">
+      <button class="back-button" onclick="window.location.href='../settings/settings.html'">
+        <i class="bi bi-arrow-left"></i>
+      </button>
+
+      <div class="wifi-header-text">
+        <h1>Internet y Red</h1>
+        <p class="subtitle">Configura tu conexión WiFi</p>
+      </div>
+
+      <button class="pill" id="refresh-wifi" title="Buscar redes">
+        <i class="bi bi-arrow-repeat pill-icon"></i>
+        <span id="scan-label">Buscar Redes</span>
+      </button>
+    </header>
+
+    <!-- Contenido -->
+    <main class="wifi-content">
+      <section class="wifi-status-card" id="wifi-status" role="status" aria-live="polite">
+        <div class="wifi-status-dot" aria-hidden="true"></div>
+        <div class="wifi-status-info">
+          <h2 id="wifi-status-primary">Sin conexión</h2>
+          <p id="wifi-status-secondary">Escanea para buscar redes disponibles.</p>
+        </div>
+        <div class="wifi-status-meta" id="wifi-status-extra"></div>
+      </section>
+
+      <h2 class="networks-title">Redes Disponibles</h2>
+
+      <!-- (Sin “card” visible en estado buscando) -->
+      <section class="networks-card">
+        <!-- Estado vacío / buscando -->
+        <div class="networks-empty" id="networks-empty">
+          <div class="empty-icon"><i class="bi bi-wifi"></i></div>
+          <p>Buscando redes disponibles...</p>
+        </div>
+
+        <!-- Lista dinámica -->
+        <div class="wifi-list" id="wifi-list"></div>
+      </section>
+
+      <!-- Panel contraseña / conectar -->
+      <section class="connect-panel" id="password-container" data-mode="idle">
+        <div class="password-input-container">
+          <label for="wifi-password">Contraseña</label>
+          <div class="password-field">
+            <input type="password" class="password-input" id="wifi-password" placeholder="Introduce la contraseña" />
+            <button class="toggle-password" id="toggle-password" type="button" aria-label="Mostrar/Ocultar contraseña">
+              <i class="bi bi-eye-slash" id="password-toggle-icon"></i>
+            </button>
+          </div>
+        </div>
+
+        <p class="connect-feedback" id="connect-feedback" aria-live="assertive"></p>
+
+        <button class="connect-button" id="connect-wifi-button" disabled>
+          <span class="loader" id="connect-loader"></span>
+          <span id="connect-text">Conectar</span>
+          <span class="connecting-text" id="connecting-text">Conectando...</span>
+        </button>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="wifi-footer">
+      <hr />
+      <div class="version">HELEN v2.1.0 · Asistente Virtual para Comunidad Sorda</div>
+    </footer>
+  </div>
+
+  <!-- ========= SCRIPTS ========= -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <!-- Stack HELEN -->
+  <script src="../../jsSignHandler/SocketIO.js"></script>
+  <script src="../../jsSignHandler/eventConnector.js"></script>
+  <script src="../../jsSignHandler/actions.js"></script>
+
+  <!-- Control WiFi (backend real) -->
+  <script src="../../jsWifi/controlWifi.js"></script>
+
+  <script src="../../jsSignHandler/loadingScreenLoader.js"></script>
+  <script src="../../ui/notifications/notifications.js" defer></script>
+  <script src="../jsFrontend/alarm-core.js" defer></script>
+</body>
+</html>

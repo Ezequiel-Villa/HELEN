@@ -1,0 +1,455 @@
+/* ================================
+   HELEN – WIFI (mock 2 centrado)
+   ================================ */
+
+/* -------- layout base -------- */
+.wifi-page{
+  min-height:100svh;
+  display:flex; flex-direction:column;
+  gap:14px;
+  padding:22px min(3vw,24px) 18px;
+}
+.wifi-header, .wifi-content, .wifi-footer{
+  width:min(96%,1240px);
+  margin:0 auto;
+}
+
+.wifi-page{
+  min-height: 100svh;              /* usa svh para móviles */
+  display: flex;
+  flex-direction: column;
+  align-items: center;              /* centra horizontal */
+  justify-content: center;          /* centra vertical */
+  padding: 32px 22px;
+  gap: 20px;                        /* separación entre secciones */
+}
+/* -------- header -------- */
+.wifi-header{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:14px;
+}
+.back-button{
+  width:46px; height:46px; border-radius:12px;
+  border:1px solid rgba(255,255,255,.12);
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.10));
+  color:#fff; display:grid; place-items:center;
+  box-shadow:var(--shadow-tile);
+  cursor:pointer;
+  transition:transform var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast);
+}
+
+.back-button:hover{ transform:translateY(-2px); border-color:rgba(190,210,230,.22); box-shadow:0 18px 36px rgba(0,0,0,.28) }
+.wifi-header-text{ display:flex; flex-direction:column; gap:4px }
+.wifi-header-text h1{
+  margin:0; font-weight:700; letter-spacing:-.3px;
+  color:var(--fg-strong,#fff);
+  font-size:clamp(32px,5.5vw,48px);
+}
+.wifi-header-text .subtitle{
+  margin:0; color:var(--fg-soft);
+  font-size:clamp(14px,2.2vw,18px);
+}
+
+/* botón pastilla */
+.pill{
+  height:44px; padding:0 16px; border-radius:22px;
+  border:1px solid var(--card-border);
+  background:radial-gradient(60% 60% at 30% 30%, var(--blue-a), var(--blue-b));
+  color:#e9f6ff; display:flex; align-items:center; gap:10px;
+  box-shadow:0 16px 34px rgba(46,107,255,.35);
+  cursor:pointer; transition:transform var(--t-fast), filter var(--t-fast), box-shadow var(--t-fast);
+}
+.pill:hover{ transform:translateY(-2px); filter:brightness(1.06) }
+.pill-icon{ display:inline-flex; align-items:center; }
+.pill.scanning .pill-icon{ animation:spin 1.1s linear infinite }
+@keyframes spin{ to{ transform:rotate(360deg) } }
+
+/* -------- contenido (todo CENTRADO) -------- */
+.wifi-content{
+  display:flex; flex-direction:column; align-items:center;
+  gap:22px; margin-top:8px;
+}
+.wifi-status-card{
+  width: min(1240px, 98%);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 20px;
+  border-radius: 20px;
+  border: 1px solid var(--card-border);
+  background: linear-gradient(170deg, rgba(16,26,44,.92), rgba(12,21,36,.86));
+  box-shadow: var(--shadow-card);
+}
+.wifi-status-card.is-offline{ border-color: rgba(255,120,140,.3); }
+.wifi-status-card.is-online{ border-color: rgba(80,220,170,.35); }
+.wifi-status-card.is-connecting{ border-color: rgba(120,180,255,.28); }
+.wifi-status-dot{
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ff6b6b;
+  box-shadow: 0 0 16px rgba(255,107,107,.38);
+  transition: background .25s ease, box-shadow .25s ease;
+}
+.wifi-status-card.is-online .wifi-status-dot{
+  background: #2fe6a6;
+  box-shadow: 0 0 16px rgba(47,230,166,.32);
+}
+.wifi-status-card.is-connecting .wifi-status-dot{
+  background: #79b2ff;
+  box-shadow: 0 0 16px rgba(121,178,255,.36);
+}
+.wifi-status-info h2{
+  margin: 0;
+  font-size: clamp(18px, 2.6vw, 24px);
+  color: var(--fg-strong, #fff);
+}
+.wifi-status-info p{
+  margin: 4px 0 0 0;
+  color: var(--fg-soft);
+  font-size: 14px;
+}
+.wifi-status-meta{
+  justify-self: end;
+  font-size: 13px;
+  color: rgba(220,230,255,.7);
+}
+.wifi-status-meta span{ display: block; }
+.networks-title{
+  width:100%; text-align:center;
+  margin:18px 0 6px; color:#dfe9ff;
+  font-size:clamp(18px,3.2vw,24px); font-weight:700;
+}
+
+/* sin contenedor visible en “buscando” */
+.networks-card{
+  background:transparent; border:none; box-shadow:none; padding:0;
+}
+
+/* bloque “buscando…” centrado */
+.networks-empty{
+  width:min(760px,94%);
+  margin:10px auto 6px; padding:22px 0;
+  display:flex; flex-direction:column; align-items:center;
+  justify-content:center; text-align:center; gap:12px; color:var(--fg);
+}
+.empty-icon{
+  width:92px; height:92px; border-radius:22px;
+  display:grid; place-items:center;
+  background:radial-gradient(60% 60% at 30% 30%, var(--blue-a), var(--blue-b));
+  box-shadow:0 16px 36px rgba(46,107,255,.38);
+  color:#ecf6ff; font-size:38px;
+}
+
+/* oculta cualquier barrita/track bajo “Buscando…” */
+.networks-card progress,
+.networks-card .progress,
+.networks-card .progress-bar,
+.networks-card .loading-track,
+.networks-empty hr,
+.networks-empty::before,
+.networks-empty::after{ display:none !important; content:none !important }
+
+/* === LISTA CENTRADA Y ANCHA (sin scroll interno) === */
+#wifi-list{
+  width: min(2340px, 98%);     /* ⬅ ancho grande como el mock */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-height: none;            /* ⬅ sin scroll interno */
+  overflow: visible;
+}
+#wifi-list:empty{ display:none }
+
+/* === TARJETAS GRANDES (mock 2) === */
+.wifi-item{
+  display: grid;
+  grid-template-columns: 100px 1fr 96px; /* icono – info – barras */
+  align-items: center;
+  gap: 22px;
+  padding: 26px 28px;          /* ⬅ más padding */
+  min-height: 120px;           /* ⬅ más altas */
+  border-radius: 22px;
+  background: linear-gradient(180deg, var(--card-top), var(--card-bot));
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-tile);
+  transition: transform var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast);
+  cursor: pointer;
+}
+.wifi-item:hover{
+  transform: translateY(-2px);
+  border-color: rgba(160,200,255,.25);
+  box-shadow: 0 16px 42px rgba(0,0,0,.28);
+}
+
+/* icono grande */
+.wifi-signal{
+  width: 72px; height: 72px;   /* ⬅ más grande */
+  border-radius: 18px;
+  display: grid; place-items: center;
+  background: linear-gradient(145deg, #0aa8ff 0%, #2f63ff 100%);
+  box-shadow: 0 16px 32px rgba(0,150,255,.35);
+  color: #eaf7ff;
+  font-size: 32px;
+}
+
+/* tipografía más clara */
+.wifi-info{ display:flex; flex-direction:column; gap: 6px; min-width:0 }
+.wifi-row{ display:flex; align-items:center; gap: 10px; min-width:0 }
+.wifi-name{
+  color:#eaf2ff; font-weight:700; letter-spacing:.2px;
+  font-size: clamp(18px, 2.2vw, 20px);  /* ⬅ mayor */
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.meta{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; color:var(--fg-soft); font-size:15px }
+.meta .lock{ color:#bcd1ff }
+.meta .signal{ color:#29e17a; font-weight:600 }
+
+/* barras a la derecha */
+.wifi-strength{ display:flex; align-items:center; justify-content:flex-end; min-width:72px }
+.wifi-strength i{ font-size:32px; color:#29e17a }
+
+/* === PANEL CONTRASEÑA IGUAL DE ANCHO Y CENTRADO === */
+.connect-panel{
+  width: min(1240px, 98%);
+  margin: 2px auto 0;
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 16px; align-items: end;
+  transition: opacity .24s ease;
+}
+
+.connect-panel[data-mode="idle"]{
+  opacity: .75;
+}
+
+.connect-panel[data-mode="open"] .password-field,
+.connect-panel[data-mode="idle"] .password-field{
+  opacity: .55;
+}
+
+.password-input:disabled{
+  color: rgba(230,240,255,.6);
+}
+
+.toggle-password[aria-disabled="true"]{
+  opacity: .45;
+  pointer-events: none;
+}
+
+.password-input-container label{ color:var(--fg-soft); font-size:14px }
+.password-field{
+  display:grid; grid-template-columns:1fr auto; gap:8px;
+  border:1px solid var(--card-border);
+  background:rgba(255,255,255,.04);
+  border-radius:14px; padding:8px 10px;
+}
+.password-input{ background:transparent; border:none; outline:none; color:#fff; font-size:16px }
+.toggle-password{
+  width:40px; height:36px; border:none; border-radius:10px;
+  background:rgba(255,255,255,.08); color:#e9f6ff; cursor:pointer; display:grid; place-items:center;
+}
+
+.connect-feedback{
+  min-height: 18px;
+  margin: 0 0 4px 0;
+  font-size: 13px;
+  color: var(--fg-soft);
+  transition: opacity .2s ease;
+}
+.connect-feedback--error{ color: #ff98a4; }
+.connect-feedback--success{ color: #72f0c8; }
+.connect-feedback[data-visible="false"]{
+  opacity: 0;
+}
+.connect-feedback[data-visible="true"]{
+  opacity: 1;
+}
+.connect-button{
+  min-width:160px; height:44px; border-radius:12px; border:1px solid var(--card-border);
+  background:radial-gradient(60% 60% at 30% 30%, var(--blue-a), var(--blue-b));
+  color:#fff; font-weight:600; display:flex; align-items:center; justify-content:center; gap:10px;
+  cursor:pointer; transition:transform var(--t-fast), filter var(--t-fast);
+}
+.connect-button:disabled{ opacity:.6; cursor:not-allowed }
+.connect-button:not(:disabled):hover{ transform:translateY(-2px); filter:brightness(1.06) }
+.loader{
+  width:16px; height:16px; border-radius:50%;
+  border:2px solid rgba(255,255,255,.35);
+  border-top-color:#fff;
+  display:none; animation:spin .8s linear infinite;
+}
+.connecting-text{ display:none }
+.connect-button.is-loading .loader{ display:inline-block }
+.connect-button.is-loading #connect-text{ display:none }
+.connect-button.is-loading .connecting-text{ display:inline }
+
+/* -------- footer -------- */
+.wifi-footer hr{ border:none; border-top:1px solid rgba(190,210,230,.14); margin:12px 0 }
+.wifi-footer .version{ color:var(--fg-soft); font-size:13px; text-align:center }
+
+/* -------- responsive -------- */
+@media (max-width:980px){
+  .wifi-header{ grid-template-columns:auto 1fr; row-gap:10px }
+  .pill{ grid-column:1 / -1; justify-self:end }
+}
+@media (max-width:720px){
+  .wifi-header-text h1{ font-size:32px }
+  #wifi-list{ width:96% }
+  .wifi-item{ padding:14px; grid-template-columns:64px 1fr auto }
+  .wifi-signal{ width:56px; height:56px; border-radius:14px; font-size:24px }
+  .wifi-strength i{ font-size:24px }
+  .wifi-status-card{ grid-template-columns:auto 1fr; grid-template-rows:auto auto; gap:12px }
+  .wifi-status-meta{ grid-column:1 / -1; justify-self:start }
+}
+
+.networks-card{ background:transparent; border:none; box-shadow:none; padding:0 }
+.wifi-content{ display:flex; flex-direction:column; align-items:center; gap:22px; margin-top:8px }
+.networks-title{ width:100%; text-align:center; margin:18px 0 6px; color:#dfe9ff; font-size:clamp(18px,3.2vw,24px); font-weight:700 }
+.networks-empty{
+  width: min(760px, 94%);
+  margin: 10px auto 6px; padding: 22px 0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:12px; color:var(--fg);
+}
+.networks-card progress,
+.networks-card .progress,
+.networks-card .progress-bar,
+.networks-card .loading-track,
+.networks-empty hr,
+.networks-empty::before,
+.networks-empty::after{ display:none !important; content:none !important }
+
+/* ===== KILL del contenedor exterior (borde/sombra/fondo) ===== */
+.networks-card,
+.networks-card::before,
+.networks-card::after,
+.wifi-content > section,
+.wifi-content > section::before,
+.wifi-content > section::after,
+#wifi-list::before,
+#wifi-list::after{
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* ===== Ancho máximo y centrado “de página” ===== */
+:root{ --wifi-max: 1480px; }              /* ⬅️ cambia si necesitas más/menos */
+
+.wifi-content{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;                    /* centra todo el bloque */
+  gap: 22px;
+  margin-top: 8px;
+}
+
+.networks-title{
+  width: min(var(--wifi-max), 98%);
+  margin: 16px auto 6px;
+  text-align: center;
+  color: #dfe9ff;
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 700;
+}
+
+/* Lista muy ancha, sin caja ni scroll interno */
+#wifi-list{
+  width: min(var(--wifi-max), 98%);       /* ⬅️ ANCHA */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-height: none !important;
+  overflow: visible !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+#wifi-list:empty{ display: none }
+
+/* Tarjetas GRANDES (largas y altas) */
+.wifi-item{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 104px 1fr 820px; /* icono | info | barras */
+  align-items: center;
+  gap: 24px;
+  padding: 28px 36px;
+  min-height: 142px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, var(--card-top), var(--card-bot));
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-tile);
+  transition: transform var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast);
+  cursor: pointer;
+}
+.wifi-item + .wifi-item{ margin-top: 2px }
+.wifi-item:hover{
+  transform: translateY(-2px);
+  border-color: rgba(160,200,255,.25);
+  box-shadow: 0 16px 42px rgba(0,0,0,.28);
+}
+
+/* Icono grande */
+.wifi-signal{
+  width: 84px; height: 84px;
+  border-radius: 20px;
+  display: grid; place-items: center;
+  background: linear-gradient(145deg, #0aa8ff 0%, #2f63ff 100%);
+  box-shadow: 0 18px 36px rgba(0,150,255,.35);
+  color: #eaf7ff; font-size: 36px;
+}
+
+/* Tipografía/meta */
+.wifi-info{ display:flex; flex-direction:column; gap:8px; min-width:0 }
+.wifi-row{ display:flex; align-items:center; gap:10px; min-width:0 }
+.wifi-name{
+  color:#eaf2ff; font-weight:700; letter-spacing:.2px;
+  font-size: clamp(20px, 2.2vw, 22px);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.meta{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; color:var(--fg-soft); font-size:15px }
+.meta .lock{ color:#bcd1ff }
+.meta .signal, .meta .bars{ color:#29e17a; font-weight:600 }
+
+/* Barras a la derecha */
+.wifi-strength{ display:flex; align-items:center; justify-content:flex-end; min-width:100px }
+.wifi-strength i{ font-size:34px; color:#29e17a }
+
+/* Panel de contraseña con el mismo ancho de la lista */
+.connect-panel{
+  width: min(var(--wifi-max), 98%);
+  margin: 2px auto 0;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: end;
+}
+
+.connect-button {
+  width: 50%;                /* 👉 Mitad del ancho actual */
+  margin: 30px auto 0 auto;  /* 👉 Centra el botón horizontalmente */
+  display: block;            /* Asegura que el margin funcione */
+  padding: 14px 0;           /* Altura equilibrada */
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #006eff, #3a8bff);
+  box-shadow: 0 0 15px rgba(0, 110, 255, 0.5);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.connect-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(0, 140, 255, 0.7);
+}

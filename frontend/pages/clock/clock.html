@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="../css/clock.css" />
+    <link rel="stylesheet" href="../../css/globals.css" />
+    <title>Reloj</title>
+</head>
+
+<body>
+    <div class="clock-page raspberry-fit-root" data-raspberry-fit-root>
+    <div class="header"></div>
+    <div class="clock">
+        <button class="back-button" onclick="window.location.href='../../index.html'">
+            <i class="bi bi-arrow-left"></i>
+        </button>
+        <div class="city-selector">
+            <div class="custom-select-container">
+                <select id="citySelector" class="custom-select">
+                    <option value="" selected>Selecciona un municipio</option>
+                    <option value="tijuana">Tijuana</option>
+                    <option value="mexicali">Mexicali</option>
+                    <option value="ensenada">Ensenada</option>
+                    <option value="tecate">Tecate</option>
+                    <option value="rosarito">Playas de Rosarito</option>
+                    <option value="chiapas">Chiapas</option>
+                </select>
+                <div class="select-icon">
+                    <i class="bi bi-geo-alt-fill"></i>
+                </div>
+            </div>
+        </div>
+
+        <p class="clock-item"></p>
+        <p class="date-item"></p>
+        <button class="toggle-format-btn" onclick="alternarFormatoHora()">Cambiar a 12 horas</button>
+    </div>
+
+    <!-- Botón flotante de Inicio (deja solo UNO) -->
+
+
+    <!-- ==== Funciones (tarjetas botón) ==== -->
+    <section class="clock-functions" aria-labelledby="funciones-title">
+        <h2 id="funciones-title" class="sr-only">Funciones del reloj</h2>
+
+        <!-- Panel que contiene las 3 tarjetas -->
+        <div class="functions-panel">
+            <div class="functions-grid">
+                <!-- Alarma -->
+                <button class="qcard qcard-action" data-target="alarm" aria-label="Ir a Alarmas">
+                    <div class="qcard-icon">
+                        <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
+                            <path fill="currentColor"
+                                d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm6-6V11a6 6 0 0 0-5-5.91V4a1 1 0 1 0-2 0v1.09A6 6 0 0 0 6 11v5l-2 2v1h16v-1l-2-2Z" />
+                        </svg>
+                    </div>
+                    <div class="qcard-text">
+                        <span class="qcard-title">Alarmas</span>
+                        <span class="qcard-subtitle" id="alarms-sub">2 activas</span>
+                    </div>
+                </button>
+
+                <!-- Temporizador -->
+                <button class="qcard qcard-action" data-target="timer" aria-label="Ir a Temporizador">
+                    <div class="qcard-icon">
+                        <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
+                            <path fill="currentColor"
+                                d="M6 2h12v4a6 6 0 0 1-2.4 4.8L14 12l1.6 1.2A6 6 0 0 1 18 18v4H6v-4a6 6 0 0 1 2.4-4.8L10 12 8.4 10.8A6 6 0 0 1 6 6V2Z" />
+                        </svg>
+                    </div>
+                    <div class="qcard-text">
+                        <span class="qcard-title">Temporizador</span>
+                        <span class="qcard-subtitle">Cuenta regresiva</span>
+                    </div>
+                </button>
+
+                <!-- Cronómetro -->
+                <button class="qcard qcard-action" data-target="stopwatch" aria-label="Ir a Cronómetro">
+                    <div class="qcard-icon">
+                        <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
+                            <path fill="currentColor"
+                                d="M14 1H10v2h4V1Zm5.64 4.64-1.41-1.41-1.42 1.41 1.41 1.41 1.42-1.41ZM12 6a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm1 8h-2v-5h2v5Z" />
+                        </svg>
+                    </div>
+                    <div class="qcard-text">
+                        <span class="qcard-title">Cronómetro</span>
+                        <span class="qcard-subtitle">Medir tiempos</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../jsFrontend/getClock.js"></script>
+    <script src="../../jsSignHandler/SocketIO.js"></script>
+    <script src="../../jsSignHandler/eventConnector.js"></script>
+    <script src="../../jsSignHandler/actions.js"></script>
+    <script src="../../jsSignHandler/loadingScreenLoader.js"></script>
+    <script src="../../ui/notifications/notifications.js" defer></script>
+    <script src="../jsFrontend/alarm-core.js" defer></script>
+
+    <!-- Solo lo necesario para selección + navegación -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Botón Inicio con fallback
+            const backBtn = document.querySelector('.back-home-btn');
+            if (backBtn) {
+                backBtn.addEventListener('click', () => {
+                    if (window.goToPageWithLoading) {
+                        window.goToPageWithLoading('index.html', 'Inicio');
+                    } else {
+                        window.location.href = '../../index.html';
+                    }
+                });
+            }
+
+            // Tarjetas: efecto de selección + navegación compatible
+            const cards = document.querySelectorAll('.qcard-action');
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    card.classList.add('is-selected');
+                    setTimeout(() => card.classList.remove('is-selected'), 420);
+
+                    const target = card.getAttribute('data-target');
+                    // reemplaza TODO el switch de navegación por esto
+                    function pagePath(file) {
+                        const path = window.location.pathname.replace(/\\/g, '/');
+                        // si ya estamos dentro de /pages/clock/, usa ruta local
+                        if (/\/pages\/clock\//.test(path)) return file;
+                        // si estamos fuera (por ejemplo en index), usa la ruta con /pages/
+                        return `pages/clock/${file}`;
+                    }
+
+                    // y el switch:
+                    switch (target) {
+                        case 'alarm':
+                            if (window.goToPageWithLoading) {
+                                window.goToPageWithLoading(pagePath('alarm.html'), 'Alarmas');
+                            } else {
+                                window.location.href = pagePath('alarm.html');
+                            }
+                            break;
+                        case 'timer':
+                            if (window.goToPageWithLoading) {
+                                window.goToPageWithLoading(pagePath('timer.html'), 'Temporizador');
+                            } else {
+                                window.location.href = pagePath('timer.html');
+                            }
+                            break;
+                        case 'stopwatch':
+                            if (window.goToPageWithLoading) {
+                                window.goToPageWithLoading(pagePath('stopwatch.html'), 'Cronómetro');
+                            } else {
+                                window.location.href = pagePath('stopwatch.html');
+                            }
+                            break;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,753 @@
+/* =============== HELEN – Dispositivos IoT (UI) =============== */
+/* Usa tokens de globals.css */
+
+:root {
+  --ok-a: #2be67b;
+  --ok-b: #6ef3a7;
+  --blue-a: #5fe1ff;
+  --blue-b: #2e6bff;
+  --r-lg: 26px;
+  --r-md: 18px;
+  --r-sm: 12px;
+}
+
+/* Layout general */
+.devices-layout {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px;
+}
+
+/* Topbar */
+.devices-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 26px;
+}
+
+.devices-topbar h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -.3px;
+  color: var(--fg-strong, #fff);
+}
+
+.title-col {
+  display: flex;
+  align-items: center;
+  gap: 14px
+}
+
+.back-button {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background: linear-gradient(180deg, var(--card-top), var(--card-bot));
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .22);
+  transition: transform .16s ease, border-color .16s ease;
+}
+
+.back-button i {
+  color: #fff;
+  font-size: 18px
+}
+
+.back-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(190, 210, 230, .22)
+}
+
+.page-title {
+  margin: 0;
+  color: #fff;
+  letter-spacing: .2px;
+  font-size: clamp(22px, 3.6vw, 34px);
+  font-weight: 300;
+}
+
+.page-subtitle {
+  margin: .5px 0 0;
+  color: var(--fg-soft)
+}
+
+/* CTA */
+.add-device-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 0;
+  cursor: pointer;
+  color: #ffffff;
+  font-weight: 500;
+  background: linear-gradient(145deg, #66e2ff, #2e6bff);
+  box-shadow: 0 12px 28px rgba(46, 107, 255, .32);
+  transition: transform .12s ease, filter .16s ease;
+}
+
+.add-device-btn i {
+  color: #ecf6ff
+}
+
+.add-device-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.04)
+}
+
+.add-device-btn:active {
+  transform: translateY(0);
+  filter: brightness(.98)
+}
+
+/* Estado vacío */
+.empty-state {
+  margin-top: 36px;
+  text-align: center;
+  color: var(--fg);
+}
+
+.empty-icon {
+  width: 110px;
+  height: 110px;
+  border-radius: 26px;
+  margin: 6px auto 16px;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(60% 60% at 30% 30%, var(--blue-a), var(--blue-b));
+  box-shadow: 0 16px 34px rgba(46, 107, 255, .35);
+}
+
+.empty-icon i {
+  color: #ecf6ff;
+  font-size: 40px
+}
+
+.empty-title {
+  margin: 8px 0 8px;
+  color: #fff;
+  font-weight: 700
+}
+
+.empty-text {
+  margin: 0;
+  color: var(--fg-soft)
+}
+
+/* Benefits */
+.benefits {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.benefit-card {
+  border-radius: var(--r-lg);
+  background: linear-gradient(180deg, var(--card-top), var(--card-bot));
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-card);
+  padding: 22px 20px;
+  text-align: center;
+}
+
+.benefit-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  margin: 0 auto 12px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .08);
+  color: #9bd1ff;
+}
+
+.benefit-icon.plus {
+  background: radial-gradient(60% 60% at 30% 30%, var(--ok-a), var(--ok-b));
+  color: var(--bg, #0b1422)
+}
+
+.benefit-icon i {
+  font-size: 26px
+}
+
+.benefit-card h3 {
+  margin: 2px 0 6px;
+  color: #fff;
+  font-weight: 600
+}
+
+.benefit-card p {
+  margin: 0;
+  color: var(--fg-soft)
+}
+
+/* Lista de dispositivos (cuando existan) */
+.device-list {
+  display: none;
+  /* el JS puede quitar este display y ocultar #emptyState */
+  margin-top: 24px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+/* (Estilos base para tarjetas de dispositivo por compatibilidad) */
+.device-card {
+  border-radius: var(--r-lg);
+  background: linear-gradient(180deg, var(--card-top), var(--card-bot));
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-card);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.device-header {
+  display: flex;
+  align-items: center;
+  gap: 12px
+}
+
+.device-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .08);
+  font-size: 24px
+}
+
+.device-name {
+  color: #fff;
+  font-weight: 700
+}
+
+/* Estado / acciones */
+.device-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: rgba(255, 255, 255, .04);
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.device-status-text {
+  color: var(--fg)
+}
+
+.status-badge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 12px;
+  color: var(--bg, #0b1422);
+  background: linear-gradient(145deg, var(--ok-a), var(--ok-b));
+}
+
+.device-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end
+}
+
+.device-actions .btn {
+  border: 1px solid rgba(255, 255, 255, .12);
+  background: rgba(255, 255, 255, .08);
+  color: #eaf2ff;
+  border-radius: 12px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.device-actions .btn:hover {
+  background: rgba(255, 255, 255, .12)
+}
+
+/* ===== Modales ===== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, .48);
+  z-index: 20;
+}
+
+.modal {
+  width: min(560px, 92vw);
+  border-radius: 26px;
+  padding: 22px;
+  background: linear-gradient(180deg, var(--card-top), var(--card-bot));
+  border: 1px solid var(--card-border);
+  color: var(--fg);
+  box-shadow: var(--shadow-card);
+}
+
+.modal-title {
+  margin: 0 0 10px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px
+}
+
+.modal-button {
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, .12);
+  background: rgba(255, 255, 255, .08);
+  color: #fff;
+  cursor: pointer;
+}
+
+.save-button {
+  background: linear-gradient(145deg, #66e2ff, #2e6bff);
+  border: 0;
+  font-weight: 800;
+  color: var(--bg, #0b1422)
+}
+
+.confirm-button {
+  background: linear-gradient(145deg, #ff4d4f, #ff767a);
+  border: 0;
+  font-weight: 800
+}
+
+/* Selectores en formularios modal */
+.edit-form {
+  display: grid;
+  gap: 16px
+}
+
+.form-group label {
+  display: block;
+  margin: 4px 0 8px;
+  color: #d3d9e3
+}
+
+.name-preview {
+  border: 1px solid rgba(255, 255, 255, .12);
+  background: rgba(255, 255, 255, .06);
+  border-radius: 12px;
+  padding: 12px;
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+}
+
+.room-selector,
+.type-selector,
+.icon-selector {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.room-option,
+.type-option,
+.icon-option {
+  border: 1px solid rgba(255, 255, 255, .12);
+  background: rgba(255, 255, 255, .06);
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  color: #eaf2ff;
+}
+
+.room-option:hover,
+.type-option:hover,
+.icon-option:hover {
+  background: rgba(255, 255, 255, .12);
+  border-color: rgba(190, 210, 230, .22);
+}
+
+/* ========= Centrado global de la página ========= */
+html, body { height: 100%; }
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100svh;
+}
+.container{
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  /* centra verticalmente el contenido principal */
+  min-height: 90svh;
+  justify-content: center;
+}
+
+/* ========= Cabecera & CTA ========= */
+.header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.title{
+  color: #fff;
+  font-size: clamp(22px, 3.2vw, 34px);
+  font-weight: 300;
+  letter-spacing: .4px;
+}
+.add-button{
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 0;
+  color: var(--bg, #0b1422);
+  font-weight: 800;
+  cursor: pointer;
+  background: linear-gradient(135deg, #66e2ff 0%, #2e6bff 72%);
+  box-shadow: 0 12px 26px rgba(46,107,255,.35), inset 0 1px 0 rgba(255,255,255,.1);
+  transition: transform .12s ease, filter .18s ease, box-shadow .18s ease;
+}
+.add-button:hover{ transform: translateY(-1px); filter: brightness(1.04) }
+.add-button:active{ transform: translateY(0); filter: brightness(.98) }
+
+/* ========= Lista / tarjetas ========= */
+#deviceList{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+.device-card{
+  border-radius: var(--r-md, 18px);
+  background: linear-gradient(180deg, var(--card-top), var(--card-bot));
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-tile);
+  padding: 16px;
+  display: grid;
+  gap: 12px;
+}
+.device-header{ display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; }
+.device-icon{
+  width: 48px; height: 48px; border-radius: 14px;
+  display: grid; place-items: center;
+  background: radial-gradient(60% 60% at 30% 30%, var(--blue-a), var(--blue-b));
+  box-shadow: 0 10px 20px rgba(46,107,255,.35);
+  font-size: 22px; color: #ecf6ff;
+}
+.device-name{
+  color:#fff; font-weight: 700; letter-spacing:.2px;
+  /* evita desborde */
+  min-width: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.device-status{ display:flex; align-items:center; gap:10px; }
+.device-status-text{ color: var(--fg-soft) }
+.status-badge{
+  padding: 4px 10px; border-radius: 999px; font-weight: 800; font-size: 12px;
+  border: 1px solid rgba(255,255,255,.14);
+}
+.status-on{ background: rgba(43,230,123,.16); color:#baffda; border-color: rgba(43,230,123,.28) }
+.status-off{ background: rgba(255,77,79,.16); color:#ffdadd; border-color: rgba(255,77,79,.28) }
+
+.device-actions{ display:flex; gap:8px; justify-content:flex-end }
+.device-actions .btn{
+  width: 38px; height: 38px; border-radius: 12px; border: 1px solid var(--card-border);
+  background: rgba(255,255,255,.06); color:#eaf2ff; cursor:pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+  transition: transform .12s ease, border-color .16s ease, background-color .16s ease;
+}
+.device-actions .btn:hover{ transform: translateY(-1px); border-color: rgba(190,210,230,.22); background: rgba(255,255,255,.1) }
+
+/* ========= Empty state centrado ========= */
+#emptyState{
+  display: none;
+  border-radius: var(--r-lg, 26px);
+  padding: 28px;
+  text-align: center;
+  background: linear-gradient(180deg, var(--card-top), var(--card-bot));
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-card);
+  color: var(--fg-soft);
+}
+
+/* ========= Modal bonito y responsive ========= */
+.modal-backdrop{
+  position: fixed; inset: 0; display: none;
+  place-items: center;
+  background: rgba(5,10,18,.7);
+  z-index: 1000;
+}
+.modal{
+  width: min(680px, 94vw);
+  border-radius: 22px;
+  padding: 18px;
+  color: var(--fg);
+  border: 1px solid var(--card-border);
+  background: linear-gradient(180deg, var(--card-top), var(--card-bot));
+  box-shadow: var(--shadow-card);
+}
+.modal-title{
+  margin: 0 0 12px;
+  font-size: 22px; font-weight: 800; color:#fff; letter-spacing:.2px;
+}
+.edit-form{ display: grid; gap: 14px; }
+.form-group label{ color:#cfd9ea; font-size: 14px }
+
+.name-preview{
+  border: 1px dashed rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  border-radius: 12px; padding: 10px 12px; color:#fff;
+  /* truncado para que no “salga” */
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.name-preview-empty{ color: var(--fg-soft) }
+
+.room-selector, .type-selector, .icon-selector{
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0,1fr));
+  gap: 10px;
+}
+.room-option, .type-option{
+  border-radius: 999px;
+  padding: 10px 14px;
+  border: 1px solid var(--card-border);
+  background: rgba(255,255,255,.06);
+  color: var(--fg);
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+  /* no romper una sola línea */
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  transition: transform .12s ease, border-color .16s ease, background-color .16s ease;
+}
+.room-option:hover, .type-option:hover{ transform: translateY(-1px); border-color: rgba(190,210,230,.22); background: rgba(255,255,255,.1) }
+.room-option.selected, .type-option.selected{
+  border-color: rgba(100,180,255,.45);
+  box-shadow: 0 0 0 3px rgba(100,180,255,.12) inset;
+  background: rgba(100,180,255,.12);
+}
+
+.icon-selector{ grid-template-columns: repeat(8, minmax(0,1fr)); }
+.icon-option{
+  height: 44px; border-radius: 14px;
+  display: grid; place-items: center;
+  border: 1px solid var(--card-border);
+  background: rgba(255,255,255,.06);
+  font-size: 20px; cursor: pointer;
+  transition: transform .12s ease, border-color .16s ease, background-color .16s ease;
+}
+.icon-option:hover{ transform: translateY(-1px); border-color: rgba(190,210,230,.22); background: rgba(255,255,255,.1) }
+.icon-option.selected{
+  border-color: rgba(100,180,255,.45);
+  box-shadow: 0 0 0 3px rgba(100,180,255,.12) inset;
+  background: rgba(100,180,255,.12);
+}
+
+.modal-buttons{
+  display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;
+}
+.cancel-button{
+  border: 1px solid var(--card-border);
+  background: rgba(255,255,255,.06);
+  color: #eaf2ff;
+  height: 42px; padding: 0 16px; border-radius: 12px; cursor: pointer;
+}
+.save-button{
+  height: 42px; padding: 0 18px; border-radius: 12px; border: 0; cursor: pointer;
+  color: var(--bg, #0b1422); font-weight: 800;
+  background: linear-gradient(135deg, #66e2ff 0%, #2e6bff 72%);
+  box-shadow: 0 10px 22px rgba(46,107,255,.32), inset 0 1px 0 rgba(255,255,255,.08);
+}
+.cancel-button:hover{ background: rgba(255,255,255,.1) }
+.save-button:hover{ filter: brightness(1.05) }
+
+/* ========= Accesibilidad/placeholder texto ========= */
+/* Asegura que cualquier texto largo se recorte con "…" */
+.truncate, .device-name, .name-preview span,
+.room-option, .type-option{
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ========= Responsive ========= */
+@media (max-width: 920px){
+  .room-selector, .type-selector{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .icon-selector{ grid-template-columns: repeat(6, minmax(0,1fr)); }
+}
+@media (max-width: 620px){
+  .icon-selector{ grid-template-columns: repeat(4, minmax(0,1fr)); }
+  #deviceList{ grid-template-columns: 1fr; }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1100px) {
+  .device-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr))
+  }
+
+  .benefits {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .devices-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px
+  }
+
+  .add-device-btn {
+    align-self: flex-end
+  }
+}
+
+/* ========= Botón Agregar (igual a “Nueva Alarma”) ========= */
+.add-device .add-button{
+  color:#fff; /* <- texto blanco */
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 0;
+  background: linear-gradient(135deg, #66e2ff 0%, #2e6bff 70%);
+  box-shadow: 0 12px 28px rgba(46,107,255,.30);
+  cursor: pointer;
+  transition: transform .12s ease, filter .16s ease, box-shadow .16s ease;
+}
+.add-device .add-button:hover{ transform: translateY(-1px); filter: brightness(1.04) }
+.add-device .add-button:active{ transform: translateY(0); filter: brightness(.98) }
+
+/* ========= Switch estilo HELEN (igual Alarmas) ========= */
+.switch{
+  position: relative; display:inline-block;
+  width: 54px; height: 28px; flex: 0 0 auto;
+}
+.switch input{ display:none }
+.switch .slider{
+  position:absolute; inset:0;
+  background: #2a3446;        /* OFF gris */
+  border-radius: 999px;
+  transition: background .18s ease, box-shadow .18s ease;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+}
+.switch .slider:before{
+  content:""; position:absolute; left:4px; top:50%;
+  width: 20px; height: 20px; border-radius: 50%;
+  transform: translateY(-50%);
+  background: #c9d3e8;        /* knob gris */
+  transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,.35);
+}
+
+/* --- Botones de acción: lápiz / basurero --- */
+.device-actions{
+  display: flex;
+  gap: 10px;
+}
+
+.action-button{
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-sm, 12px);
+  border: 1px solid var(--card-border, rgba(160,190,220,.14));
+  background: rgba(255,255,255,.06);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
+  box-shadow: 0 10px 24px rgba(0,0,0,.18);
+  color: #dbe8ff;               /* color de icono (heredado por el SVG con regla de abajo) */
+}
+
+.action-button:hover{
+  transform: translateY(-2px);
+  background: rgba(255,255,255,.10);
+  border-color: rgba(190,210,230,.22);
+  color: #ffffff;
+}
+
+.action-button:active{
+  transform: translateY(0);
+  filter: brightness(.98);
+}
+
+.action-button:disabled{
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+/* Fuerza a que el trazo del SVG herede el color del botón */
+.action-button svg path,
+.action-button svg line,
+.action-button svg polyline,
+.action-button svg rect,
+.action-button svg circle {
+  stroke: currentColor !important;
+}
+
+/* Ajuste de tamaño del SVG para que se vea nítido */
+.action-button svg{
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* (por si quieres un énfasis distinto para eliminar) */
+.action-button.danger:hover{
+  background: rgba(255,77,79,.14);
+  border-color: rgba(255,77,79,.32);
+  color: #ffd9db;
+}
+
+/* ON */
+.switch input:checked + .slider{
+  background: linear-gradient(135deg, #66e2ff, #2e6bff);
+  box-shadow: 0 6px 16px rgba(46,107,255,.28) inset;
+}
+.switch input:checked + .slider:before{
+  transform: translate(26px, -50%);
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(46,107,255,.35);
+}
+
+/* ========= Estado de tarjeta apagada (gris como Alarmas) ========= */
+.device-card.is-off{
+  opacity: .55;
+  filter: grayscale(.15);
+}
+.device-card.is-off .action-button{ opacity:.7 }
+.device-status-text{
+  color: var(--fg-soft); font-size: 14px; margin-left: 10px;
+}
+.status-badge{
+  margin-left: 10px;
+  padding: 3px 8px; border-radius:999px; font-weight:800; font-size:12px;
+  border:1px solid rgba(255,255,255,.12);
+}
+.status-badge.status-off{ background: rgba(255,255,255,.06); color:#cbd6ea }
+.status-badge.status-on { background: rgba(46,107,255,.16); color:#d6e6ff; border-color: rgba(46,107,255,.32) }

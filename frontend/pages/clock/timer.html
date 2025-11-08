@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Temporizador</title>
+
+  <!-- Iconos / Libs -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Estilos del proyecto -->
+  <link rel="stylesheet" href="../../css/globals.css"/>
+  <link rel="stylesheet" href="../css/timer.css"/>
+</head>
+
+<body>
+  <div class="timer-page">
+    <!-- Header superior -->
+    <header class="timers-header">
+      <button class="back-button" onclick="window.location.href='../clock/clock.html'">
+        <i class="bi bi-arrow-left"></i>
+      </button>
+      <h1>Temporizador</h1>
+      <!-- placeholder para alinear (igual que en alarmas) -->
+      <span class="header-spacer"></span>
+    </header>
+
+    <!-- Tarjeta principal -->
+    <section class="timer-card">
+      <div class="timer-card-inner">
+        <div class="timer-icon-wrap">
+          <div class="timer-glow"></div>
+          <div class="timer-icon">
+            <i class="bi bi-stopwatch"></i>
+          </div>
+        </div>
+
+        <div class="timer-main">
+          <span class="timer-label" id="timerLabel">Sin temporizador seleccionado</span>
+          <div class="timer-display" id="timerDisplay">00:00</div>
+          <span class="timer-status" id="timerStatus">Usa los presets para crear uno nuevo.</span>
+        </div>
+
+        <div class="timer-actions" role="group" aria-label="Controles del temporizador seleccionado">
+          <button id="startPauseBtn" class="primary-btn icon-btn" type="button" title="Iniciar o pausar temporizador" aria-label="Iniciar temporizador" disabled>
+            <i class="bi bi-play-fill" aria-hidden="true"></i>
+          </button>
+          <button id="resetBtn" class="ghost-btn icon-btn" type="button" title="Restablecer temporizador" aria-label="Restablecer temporizador" disabled>
+            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Presets -->
+    <section class="presets-wrapper">
+      <div class="presets-header">
+        <h2>Presets Rápidos</h2>
+        <button id="openCustomBtn" class="chip-btn">Personalizar</button>
+      </div>
+
+      <div class="presets-grid" id="presetsGrid">
+        <!-- Fila 1 -->
+        <button class="preset-btn" data-min="1">1 min</button>
+        <button class="preset-btn" data-min="3">3 min</button>
+        <button class="preset-btn" data-min="5">5 min</button>
+        <button class="preset-btn" data-min="10">10 min</button>
+        <!-- Fila 2 -->
+        <button class="preset-btn" data-min="15">15 min</button>
+        <button class="preset-btn" data-min="30">30 min</button>
+        <button class="preset-btn" data-min="45">45 min</button>
+        <button class="preset-btn" data-min="60">1 hora</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Modal Tiempo Personalizado -->
+  <div id="customTimeModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Tiempo Personalizado</h2>
+        <button class="close-modal" type="button" aria-label="Cerrar">
+          <i class="bi bi-x"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="custom-time-columns">
+          <!-- Horas -->
+          <div class="ct-col">
+            <button class="ct-plus" data-target="hours">+</button>
+            <div class="ct-box">
+              <input id="customHours" type="number" min="0" max="23" value="0" />
+            </div>
+            <button class="ct-minus" data-target="hours">−</button>
+            <span class="ct-label">Horas</span>
+          </div>
+
+          <div class="ct-sep">:</div>
+
+          <!-- Minutos -->
+          <div class="ct-col">
+            <button class="ct-plus" data-target="minutes">+</button>
+            <div class="ct-box">
+              <input id="customMinutes" type="number" min="0" max="59" value="0" />
+            </div>
+            <button class="ct-minus" data-target="minutes">−</button>
+            <span class="ct-label">Minutos</span>
+          </div>
+
+          <div class="ct-sep">:</div>
+
+          <!-- Segundos -->
+          <div class="ct-col">
+            <button class="ct-plus" data-target="seconds">+</button>
+            <div class="ct-box">
+              <input id="customSeconds" type="number" min="0" max="59" value="0" />
+            </div>
+            <button class="ct-minus" data-target="seconds">−</button>
+            <span class="ct-label">Segundos</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="cancel-btn" type="button" id="customCancelBtn">Cancelar</button>
+        <button class="create-btn" type="button" id="customSetBtn">Establecer</button>
+      </div>
+    </div>
+  </div>
+
+    <section class="active-timers" aria-labelledby="activeTimersTitle">
+      <div class="active-timers__header">
+        <h2 id="activeTimersTitle">Temporizadores activos</h2>
+        <p class="active-timers__hint">Puedes crear varios temporizadores y seguirán contando aunque cambies de pantalla.</p>
+      </div>
+      <div id="timersList" class="timers-list" role="list" aria-live="polite"></div>
+      <div id="noTimersMessage" class="timers-empty" role="status">No hay temporizadores activos. Usa un preset o personaliza el tiempo.</div>
+    </section>
+
+  </div>
+
+  <!-- Scripts del proyecto (compat con backend y señas) -->
+  <script src="../../ui/notifications/notifications.js"></script>
+  <script src="../jsFrontend/alarm-core.js"></script>
+  <script src="../jsFrontend/timer.js"></script>
+  <script src="../../jsSignHandler/SocketIO.js"></script>
+  <script src="../../jsSignHandler/eventConnector.js"></script>
+  <script src="../../jsSignHandler/actions.js"></script>
+  <script src="../../jsSignHandler/loadingScreenLoader.js"></script>
+</body>
+</html>

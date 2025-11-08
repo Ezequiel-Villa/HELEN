@@ -1,0 +1,592 @@
+/* =========================================================
+   HELEN · Alarmas (UI según mockups)
+   Compatibilidad: estructura del nuevo alarm.html
+   Se apoya en variables globales (bg, card, radios, sombras)
+   ========================================================= */
+
+/* ---------- Layout general ---------- */
+.alarms-page{
+  position: relative;
+  z-index: 1;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 28px 22px 120px;
+  color: var(--fg, #eaf2ff); /* de globals */
+}
+
+/* ---------- Header superior ---------- */
+.alarms-header{
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.alarms-header h1{
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -.3px;
+  color: var(--fg-strong, #fff);
+}
+
+/* Botón atrás */
+.back-button{
+  width: 42px;
+  height: 42px;
+  border-radius: var(--r-sm, 12px);
+  border: 1px solid var(--card-border, rgba(160,190,220,.14));
+  background: rgba(255,255,255,.06);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform .16s ease, background .2s ease, border-color .2s ease;
+}
+.back-button i{ font-size: 18px; opacity: .9; color: #fff; }
+.back-button:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.1);
+  border-color: rgba(190,210,230,.22);
+}
+
+/* Botón “+ Nueva Alarma” con glow */
+.primary-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 0;
+  font-weight: 400;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(135deg, var(--blue-a, #5fe1ff) 0%, var(--blue-b, #2e6bff) 70%);
+  box-shadow: 0 10px 28px rgba(46,107,255,.35);
+  transition: transform .16s ease, box-shadow .2s ease, filter .2s ease;
+}
+.primary-btn i{ font-size: 16px; }
+.primary-btn:hover{ transform: translateY(-1px); filter: brightness(1.05); }
+.primary-btn:active{ transform: translateY(0); filter: brightness(.98); }
+
+/* ---------- Lista de alarmas ---------- */
+.alarms-list{
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 14px;
+}
+
+/* Estados iniciales (cargando / sin alarmas) */
+.alarm-loading,
+.no-alarms-message{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 18px;
+  border-radius: var(--r-md, 18px);
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--card-border, rgba(160,190,220,.14));
+  color: var(--fg, #eaf2ff);
+}
+.spinner{ font-size: 24px; animation: spin 1.4s linear infinite }
+@keyframes spin{ to{ transform: rotate(360deg) } }
+
+/* ---------- Tarjeta de alarma ---------- */
+.alarm-card{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  border-radius: var(--r-lg, 26px);
+  background: linear-gradient(180deg,
+              var(--card-top, rgba(18,28,46,.92)),
+              var(--card-bot, rgba(14,23,39,.92)));
+  border: 1px solid var(--card-border, rgba(160,190,220,.14));
+  box-shadow: var(--shadow-card, 0 26px 60px rgba(0,0,0,.38));
+  transition: transform .16s ease, border-color .2s ease, background .2s ease, opacity .2s ease;
+}
+.alarm-card:hover{
+  transform: translateY(-2px);
+  border-color: rgba(190,210,230,.22);
+}
+
+/* Lado izquierdo */
+.alarm-left{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Ícono campana (glow activo) */
+.alarm-icon{
+  width: 56px;
+  height: 56px;
+  border-radius: var(--r-sm, 12px);
+  display: grid;
+  place-items: center;
+  background: radial-gradient(60% 60% at 30% 30%,
+              var(--blue-a, #5fe1ff), var(--blue-b, #2e6bff));
+  border: 1px solid rgba(255,255,255,.06);
+  box-shadow: 0 12px 26px rgba(46,107,255,.35);
+  transition: filter .2s ease, opacity .2s ease;
+}
+.alarm-icon i{ color: #ecf6ff; font-size: 22px }
+
+/* Info (hora, etiqueta, días) */
+.alarm-info .alarm-time{
+  margin: 0 0 6px 0;
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  line-height: 1;
+  color: var(--fg-strong, #fff);
+}
+.alarm-info .alarm-name{
+  margin: 0 0 10px 0;
+  font-size: 15px;
+  color: var(--fg, #eaf2ff);
+  opacity: .92;
+}
+
+/* Chips de días */
+.alarm-days{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.alarm-days span{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  font-weight: 700;
+  color: #d9f4ff;
+  border-radius: 10px;
+  border: 1px solid var(--card-border, rgba(160,190,220,.14));
+  background: rgba(255,255,255,.06);
+  transition: background .2s ease, color .2s ease, opacity .2s ease;
+}
+
+/* Lado derecho (acciones + switch) */
+.alarm-right{
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.edit-btn,
+.delete-btn{
+  width: 40px; height: 40px;
+  border-radius: var(--r-sm, 12px);
+  border: 1px solid var(--card-border, rgba(160,190,220,.14));
+  background: rgba(255,255,255,.06);
+  color: #fff;
+  display: grid; place-items: center;
+  cursor: pointer;
+  transition: transform .16s ease, background .2s ease, border-color .2s ease, color .2s ease;
+}
+.edit-btn i, .delete-btn i{ font-size: 16px }
+.edit-btn:hover, .delete-btn:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.1);
+  border-color: rgba(190,210,230,.22);
+}
+.delete-btn:hover i{ color: #ffb2a7; }
+
+/* Switch (gris off / azul on) */
+.switch{
+  position: relative;
+  display: inline-block;
+  width: 54px;
+  height: 28px;
+}
+.switch input{ opacity: 0; width: 0; height: 0; }
+.slider{
+  position: absolute; inset: 0;
+  cursor: pointer;
+  border-radius: 999px;
+  background: rgba(255,255,255,.28);   /* OFF gris */
+  transition: background .25s ease;
+}
+.slider:before{
+  content: "";
+  position: absolute;
+  height: 22px; width: 22px;
+  left: 3px; top: 3px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,.25);
+  transition: transform .25s ease;
+}
+.switch input:checked + .slider{
+  background: linear-gradient(135deg,
+              var(--blue-a, #5fe1ff) 0%,
+              var(--blue-b, #2e6bff) 70%); /* ON azul */
+}
+.switch input:checked + .slider:before{
+  transform: translateX(26px);
+}
+
+/* Estado INACTIVO (tarjeta “grisada”) */
+.alarm-card.inactive{
+  opacity: .45;
+}
+.alarm-card.inactive .alarm-icon{
+  background: rgba(255,255,255,.06);
+  box-shadow: none;
+}
+.alarm-card.inactive .alarm-days span{ opacity: .6; }
+
+/* ---------- Nota inferior ---------- */
+.alarms-footer{
+  margin-top: 24px;
+}
+.alarms-footer p{
+  margin: 0;
+  padding: 18px 22px;
+  text-align: center;
+  font-size: 14px;
+  opacity: .86;
+  border-radius: var(--r-md, 18px);
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--card-border, rgba(160,190,220,.14));
+}
+
+/* =================================================
+   MODAL · Nueva Alarma
+   ================================================= */
+.modal{
+  position: fixed; inset: 0;
+  display: none; /* .open => visible */
+  align-items: center; justify-content: center;
+  background: rgba(5,10,18,.72);
+  z-index: 1000;
+}
+.modal.open{ display: flex; }
+
+.modal-content{
+  width: 100%;
+  max-width: 560px;
+  border-radius: var(--r-lg, 26px);
+  background: linear-gradient(180deg,
+              var(--card-top, rgba(18,28,46,.92)),
+              var(--card-bot, rgba(14,23,39,.92)));
+  border: 1px solid var(--card-border, rgba(160,190,220,.14));
+  color: var(--fg, #eaf2ff);
+  box-shadow: var(--shadow-card, 0 26px 60px rgba(0,0,0,.38));
+}
+
+.modal-header{
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 20px 8px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.modal-header h2{
+  margin: 0; font-size: 22px; color: var(--fg-strong, #fff);
+}
+.close-modal{
+  width: 40px; height: 40px;
+  border-radius: var(--r-sm, 12px);
+  border: 1px solid var(--card-border, rgba(160,190,220,.14));
+  background: rgba(255,255,255,.06);
+  display: grid; place-items: center;
+  color: #fff;
+  cursor: pointer;
+  transition: transform .16s ease, background .2s ease, border-color .2s ease;
+}
+.close-modal:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.1);
+  border-color: rgba(190,210,230,.22);
+}
+
+.modal-body{
+  padding: 12px 20px 8px;
+  display: grid;
+  gap: 18px;
+}
+
+.modal-body label{
+  font-size: 14px;
+  color: var(--fg, #eaf2ff);
+  opacity: .9;
+  margin-bottom: -6px;
+}
+
+/* Inputs de hora y etiqueta */
+#alarm-time-input,
+#alarm-label-input{
+  width: 100%;
+  height: 52px;
+  border-radius: var(--r-sm, 12px);
+  border: 1px solid var(--card-border, rgba(160,190,220,.14));
+  background: rgba(0,0,0,.25);
+  color: var(--fg-strong, #fff);
+  padding: 0 16px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+}
+#alarm-time-input::-webkit-calendar-picker-indicator{ filter: invert(1) opacity(.8) }
+#alarm-label-input::placeholder{ color: rgba(255,255,255,.55) }
+
+#alarm-time-input:focus,
+#alarm-label-input:focus{
+  border-color: rgba(120,170,255,.45);
+  box-shadow: 0 0 0 3px rgba(120,170,255,.18);
+  background: rgba(255,255,255,.06);
+}
+
+/* Día-selector dentro del modal */
+.day-selectors{
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: -6px;
+}
+.day-selectors .day{
+  width: 48px; height: 48px;
+  border-radius: var(--r-sm, 12px);
+  display: grid; place-items: center;
+  font-weight: 700; color: #e6f3ff;
+  border: 1px solid var(--card-border, rgba(160,190,220,.14));
+  background: rgba(255,255,255,.06);
+  cursor: pointer;
+  transition: transform .16s ease, background .2s ease, border-color .2s ease, color .2s ease;
+}
+.day-selectors .day:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.1);
+  border-color: rgba(190,210,230,.22);
+}
+.day-selectors .day.active{
+  color: var(--bg, #0b1422);
+  border-color: rgba(120,170,255,.45);
+  background: linear-gradient(135deg, var(--blue-a, #5fe1ff) 0%, var(--blue-b, #2e6bff) 80%);
+}
+
+/* Footer del modal (Cancelar / Crear) */
+.modal-footer{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 14px 20px 20px;
+}
+
+.cancel-btn,
+.create-btn{
+  height: 48px;
+  border-radius: 999px;
+  font-weight: 800;
+  cursor: pointer;
+  border: 0;
+}
+
+/* Cancelar (blanco) */
+.cancel-btn{
+  background: #fff;
+  color: #1a1f2b;
+  box-shadow: 0 6px 16px rgba(255,255,255,.18);
+  transition: transform .16s ease, filter .2s ease;
+}
+.cancel-btn:hover{ transform: translateY(-1px); filter: brightness(.98) }
+
+/* Crear (degradado azul) */
+.create-btn{
+  background: linear-gradient(135deg, var(--blue-a, #5fe1ff) 0%, var(--blue-b, #2e6bff) 70%);
+  color: #fff;
+  box-shadow: 0 10px 28px rgba(46,107,255,.35);
+  transition: transform .16s ease, filter .2s ease;
+}
+.create-btn:hover{ transform: translateY(-1px); filter: brightness(1.05) }
+
+/* Botón borrar: forzar estilo para evitar fondo blanco */
+.delete-btn{
+  width: 40px; height: 40px;
+  border-radius: var(--r-sm, 12px) !important;
+  border: 1px solid var(--card-border, rgba(160,190,220,.14)) !important;
+  background: rgba(255,255,255,.06) !important;
+  color: #fff !important;
+  display: grid; place-items: center;
+  cursor: pointer;
+  transition: transform .16s ease, background .2s ease, border-color .2s ease, color .2s ease;
+}
+.delete-btn:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.1) !important;
+  border-color: rgba(190,210,230,.22) !important;
+}
+.delete-btn i{ font-size: 16px; }
+.delete-btn:hover i{ color: #ffb2a7; }
+
+/* Modal de confirmación: hereda estilos del otro modal */
+#deleteConfirmModal .modal-content .modal-body p{
+  margin: 8px 0 0 0;
+  opacity: .92;
+  font-size: 15px;
+}
+
+/* Toast Helen */
+.helen-toast{
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 1100;
+  display: none;
+  min-width: 260px;
+  max-width: 360px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  color: #fff;
+  font-weight: 600;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 16px 40px rgba(0,0,0,.35);
+}
+.helen-toast.success{
+  display: block;
+  background: linear-gradient(135deg, #00d1ff 0%, #2e6bff 70%);
+}
+.helen-toast.error{
+  display: block;
+  background: linear-gradient(135deg, #ff6b6b 0%, #f43f5e 70%);
+}
+
+/* ===== HELEN Alarm Card (para SweetAlert2) ===== */
+.swal2-container {
+  backdrop-filter: none;
+  background: rgba(5,10,18,.68);
+  z-index: 99999;
+}
+
+.swal-helen.swal2-popup{
+  width: min(92vw, 560px) !important;
+  border-radius: 28px !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #fff !important;
+}
+
+/* Tarjeta interior */
+.helen-alarm-card{
+  display: grid;
+  grid-template-rows: auto auto auto;
+  gap: 18px;
+  padding: 28px 28px 24px;
+  border-radius: 28px;
+  background:
+    radial-gradient(120% 120% at 20% 0%, rgba(21,146,255,.14), transparent 50%),
+    linear-gradient(180deg, rgba(16,24,40,.96), rgba(12,21,36,.96));
+  border: 1px solid rgba(160,190,220,.14);
+  box-shadow:
+    0 24px 90px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+/* Campana */
+.helen-alarm-icon{
+  width: 84px; height: 84px;
+  margin: 6px auto 2px;
+  border-radius: 22px;
+  display: grid; place-items: center;
+  background:
+    radial-gradient(80% 80% at 30% 20%, #5fe1ff 0%, #2e6bff 70%);
+  border: 1px solid rgba(255,255,255,.1);
+  box-shadow:
+    0 16px 34px rgba(46,107,255,.45),
+    inset 0 0 0 7px rgba(11,20,34,.55);
+}
+.helen-alarm-icon svg { width: 32px; height: 32px; fill: #ecf6ff; }
+
+/* Título y hora */
+.helen-alarm-title{
+  text-align: center;
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: .2px;
+  margin: 4px 0 4px;
+  color: #fff;
+}
+.helen-alarm-time{
+  text-align: center;
+  font-weight: 800;
+  font-size: 20px;
+  opacity: .92;
+  letter-spacing: .6px;
+}
+
+/* Botón */
+.helen-alarm-actions{
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+}
+.helen-stop-btn{
+  height: 48px; min-width: 180px;
+  border-radius: 999px;
+  padding: 0 22px;
+  border: 0;
+  font-weight: 800;
+  color: var(--bg, #0b1422);
+  background: linear-gradient(135deg, #66e2ff 0%, #2e6bff 70%);
+  box-shadow:
+    0 14px 30px rgba(46,107,255,.35),
+    0 2px 0 rgba(255,255,255,.12) inset;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .18s ease, filter .18s ease;
+}
+.helen-stop-btn:hover { transform: translateY(-1px); filter: brightness(1.04); }
+.helen-stop-btn:active { transform: translateY(0); filter: brightness(.98); }
+
+/* === Centrar toda la vista de Alarmas en pantalla === */
+.alarms-page{
+  min-height: 100svh;            /* alto de la ventana */
+  display: flex;
+  flex-direction: column;
+  align-items: center;            /* centra horizontalmente */
+  justify-content: center;        /* centra verticalmente */
+  gap: 20px;                      /* separación entre secciones */
+  padding: 32px 22px;             /* un poco más de aire */
+}
+
+/* Limita el ancho de cada sección para que quede bonito */
+.alarms-header,
+.alarms-list,
+.alarms-footer{
+  width: 100%;
+  max-width: 980px;               /* mismo max que ya usas */
+  margin: 0 auto;
+}
+
+/* Si hay poca altura de pantalla, evita que se corte y vuelve al flujo normal */
+@media (max-height: 700px){
+  .alarms-page{
+    justify-content: flex-start;
+    padding-top: 24px;
+  }
+}
+
+/* Entrada/animación */
+.swal2-show.swal-helen { animation: helenPop .18s ease-out; }
+@keyframes helenPop { from { transform: translateY(6px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+
+
+/* animaciones suaves */
+.swal2-show.swal-helen { animation: helenPop .18s ease-out; }
+@keyframes helenPop { from { transform: scale(.98); opacity: 0 } to { transform: scale(1); opacity: 1 } }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px){
+  .alarms-page{ padding: 20px 14px 100px }
+  .alarms-header h1{ font-size: 22px }
+  .primary-btn{ padding: 9px 14px }
+  .alarm-info .alarm-time{ font-size: 36px }
+  .alarm-icon{ width: 50px; height: 50px }
+}
+

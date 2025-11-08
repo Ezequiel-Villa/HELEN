@@ -1,0 +1,33 @@
+<svg width="360" height="260" viewBox="0 0 360 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg-gradient-hour" x1="50" y1="14" x2="320" y2="240" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#101D33" />
+      <stop offset="0.45" stop-color="#1E3258" />
+      <stop offset="1" stop-color="#15233E" />
+    </linearGradient>
+    <linearGradient id="hand-gradient-hour" x1="120" y1="36" x2="250" y2="220" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8AF6FF" />
+      <stop offset="0.5" stop-color="#5E7BFF" />
+      <stop offset="1" stop-color="#FF65C9" />
+    </linearGradient>
+    <radialGradient id="glow-hour" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(180 232) rotate(90) scale(118 220)">
+      <stop offset="0" stop-color="#6A5CFF" stop-opacity="0.42" />
+      <stop offset="1" stop-color="#6A5CFF" stop-opacity="0" />
+    </radialGradient>
+    <filter id="shadow-hour" x="60" y="34" width="240" height="196" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#001027" flood-opacity="0.55" />
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="360" height="260" rx="32" fill="url(#bg-gradient-hour)" />
+  <rect x="0" y="0" width="360" height="260" rx="32" fill="url(#glow-hour)" />
+  <g filter="url(#shadow-hour)">
+    <path d="M136 50c-11 0-20 9-20 20v72l-18-11c-9-5-21-2-26 7-5 9-2 20 7 26l44 28c6 4 13 6 20 6h86c17 0 30-13 30-30v-60c0-11-9-20-20-20s-20 9-20 20v26h-12V72c0-11-9-20-20-20s-20 9-20 20v66h-12V70c0-11-9-20-20-20z" fill="url(#hand-gradient-hour)" />
+  </g>
+  <g opacity="0.85">
+    <circle cx="264" cy="92" r="36" fill="#0F1C2F" />
+    <circle cx="264" cy="92" r="30" fill="#F8FAFF" />
+    <path d="M264 68a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zm0 43a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zm24-21.5a2.5 2.5 0 1 1 5 0 2.5 2.5 0 0 1-5 0zm-53 0a2.5 2.5 0 1 1 5 0 2.5 2.5 0 0 1-5 0z" fill="#5E7BFF" />
+    <path d="M264 76c-1.1 0-2 .9-2 2v14.6l-11.4 11.4c-.8.8-.8 2.1 0 2.9.8.8 2.1.8 2.9 0l12-12c.4-.4.6-.9.6-1.4V78c0-1.1-.9-2-2-2z" fill="#5E7BFF" />
+  </g>
+  <path d="M94 194c0 12 30 24 86 24s86-12 86-24-30-24-86-24-86 12-86 24z" fill="#060E1E" fill-opacity="0.45" />
+</svg>

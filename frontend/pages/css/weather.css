@@ -1,0 +1,348 @@
+/* ===== HELEN · Clima (optimizado pantalla chica) ===== */
+/* Usa variables y fondo de globals.css */
+body { overflow-x: hidden; }
+.weather-wrap{
+  width: min(1120px, 94vw);
+  margin: 36px auto 14px;
+}
+
+/* Header */
+.page-title{
+  margin: 0 0 6px;
+  font-size: clamp(24px, 3vw, 36px);
+  color: var(--fg-strong);
+  font-weight: 600;
+  letter-spacing: .2px;
+}
+.weather-header{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.weather-header h1{
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -.3px;
+  color: var(--fg-strong, #fff);
+} 
+
+.location-row{ display:inline-flex; align-items:center; gap:10px; color:var(--fg); opacity:.95 }
+.location-row i{ color:#89b7ff }
+.date-section{ margin:2px 0 0; color:rgba(255,255,255,.78); font-size:14px }
+
+/* Botón Cambiar Ciudad (select nativo invisible) */
+.change-city{ position:relative; justify-self:end }
+.change-city .custom-select-container{
+  position:relative; display:inline-flex; align-items:center;
+  padding:8px 14px 8px 12px; border-radius:999px;
+  border:1px solid rgba(255,255,255,.18);
+  background:linear-gradient(145deg, rgba(255,255,255,.08), rgba(255,255,255,.14));
+  box-shadow:0 8px 18px rgba(0,0,0,.18);
+}
+.change-city .select-icon{ margin-right:8px; color:#fff }
+.change-city .select-label{ color:#fff; font-weight:500 }
+.custom-select{ position:absolute; inset:0; opacity:0; appearance:none; cursor:pointer }
+
+/* ===== Panel actual ===== */
+.card{
+  background:linear-gradient(180deg,var(--card-top),var(--card-bot));
+  border:1px solid var(--card-border);
+  border-radius:var(--r-lg);
+  box-shadow:var(--shadow-card);
+}
+.current-panel{
+  padding:18px 20px;             /* compacto para que todo quepa */
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:16px 20px; align-items:center;
+}
+.current-left{
+  display:grid; grid-template-columns:auto 1fr; gap:14px; align-items:center;
+}
+.weather-badge{
+  width:68px; height:68px; border-radius:20px;
+  display:grid; place-items:center;
+  background:radial-gradient(60% 60% at 30% 30%, var(--blue-a), var(--blue-b));
+  box-shadow:0 12px 28px rgba(46,107,255,.35);
+}
+.weather-badge .weather-icon{ font-size:30px; color:#fff }
+.current-main .temperature{ font-size:clamp(40px,5vw,54px); color:var(--fg-strong); font-weight:500; line-height:1 }
+.current-main .status{ color:var(--fg); opacity:.92; font-size:15px; text-transform:capitalize }
+
+/* Máx/Mín/Sensación */
+.current-right{ margin-left:auto; text-align:right; color:var(--fg); opacity:.92 }
+.current-right p{ margin:3px 0 }
+.current-right strong{ color:#fff }
+
+/* ===== Stats: icono + valor grande + etiqueta pequeña debajo ===== */
+.current-stats{
+  grid-column: 1 / -1;
+  margin-top:8px; padding-top:10px;
+  border-top:1px solid rgba(190,210,230,.14);
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px;
+}
+.stat{
+  display:grid;
+  grid-template-areas:
+    "icon value"
+    "icon label";
+  grid-template-columns:auto 1fr;
+  align-items:center;
+  column-gap:10px;
+}
+.stat i{ grid-area:icon; color:#80b6ff; font-size:18px }
+.stat strong{
+  grid-area:value;
+  color:#fff;
+  font-size:16px;                /* valor más grande */
+  line-height:1.1;
+}
+.stat span{
+  grid-area:label;
+  color:var(--fg-soft);
+  font-size:12px;                /* etiqueta pequeñita */
+  margin-top:2px;
+}
+
+/* ===== Secciones ===== */
+.section-title{
+  margin:16px 0 8px;
+  font-size:17px; color:#fff; font-weight:600;
+}
+
+/* ===== Próximas Horas (chips compactos, scroll horizontal si sobra) ===== */
+.hourly{ padding:12px 14px }
+.forecast-row{
+  display:flex; gap:10px; overflow-x:auto; overflow-y:hidden; padding-bottom:4px; scroll-snap-type:x proximity;
+}
+.forecast-row::-webkit-scrollbar{ height:6px }
+.forecast-row::-webkit-scrollbar-thumb{ background:rgba(255,255,255,.22); border-radius:8px }
+.forecast-item{
+  min-width:88px; padding:10px; border-radius:14px;
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.10);
+  display:grid; grid-template-rows:auto auto auto; justify-items:center; gap:6px;
+  scroll-snap-align:start;
+}
+.forecast-item i{ font-size:20px; color:#bfe2ff }
+.forecast-item .day{ color:var(--fg-soft); font-size:12px; margin:0 }
+.forecast-item .temperature{ color:#fff; font-weight:600; font-size:13px }
+
+/* ===== Próximos 7 Días (tarjetas GRANDES, llenan toda la card) ===== */
+.daily{ padding:14px 16px }
+.daily .forecast-row{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* más grandes y llenan ancho */
+  gap:14px;
+  overflow:visible;               /* sin scroll vertical */
+  padding:2px 0;
+}
+.daily .forecast-item{
+  min-width:unset;                /* que se adapte al grid */
+  padding:14px;
+  border-radius:16px;
+}
+.daily .forecast-item i{ font-size:24px }
+.daily .forecast-item .temperature{ font-size:16px }
+
+/* ===== Loader ===== */
+.weather-loading{
+  position:fixed; inset:0; display:none; place-items:center;
+  background:rgba(5,10,18,.72);
+  z-index:20;
+}
+.weather-loading .spinner{ font-size:28px; color:#fff; animation:spin 1s linear infinite }
+.weather-loading p{ color:#fff; margin-top:10px }
+@keyframes spin{ to{ transform:rotate(360deg) } }
+
+/* ===== Responsive fino para pantallas muy pequeñas ===== */
+@media (max-height: 640px){
+  .weather-wrap{ margin:24px auto 8px }
+  .current-panel{ padding:14px 16px }
+  .current-stats{ gap:10px }
+}
+@media (max-width: 980px){
+  .current-panel{ grid-template-columns:auto 1fr; }
+  .current-right{ grid-column:1 / -1; text-align:left }
+}
+@media (max-width: 720px){
+  .current-stats{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .daily .forecast-row{ grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+}
+
+/* ===== Botones de cabecera (Inicio + Cambiar ciudad) ===== */
+.header-actions{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  justify-self: end;
+}
+
+.pill-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,.18);
+  background: linear-gradient(145deg, rgba(255,255,255,.08), rgba(255,255,255,.14));
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(0,0,0,.18);
+  transition: transform var(--t-fast) ease, box-shadow var(--t-fast) ease;
+}
+.pill-btn i{ font-size: 16px }
+@media (hover:hover){
+  .pill-btn:hover{ transform: translateY(-1px); box-shadow: 0 10px 22px rgba(0,0,0,.22) }
+}
+
+/* Alinea visualmente con el botón de Cambiar ciudad existente */
+.header-actions .custom-select-container{ margin-left: 2px }
+
+/* Misma grilla y tamaño para horas y días */
+.hourly-forecast,
+.daily-forecast .forecast-row{
+  display: grid;
+  grid-template-columns: repeat(6, minmax(140px, 1fr));
+  gap: 18px;
+}
+
+.hourly-forecast .forecast-item,
+.daily-forecast .forecast-item{
+  height: 120px;              /* igual que días */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-md);
+  background: rgba(15,26,43,.60);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-tile);
+}
+.hourly-forecast .forecast-item .day{
+  font-size: 13px;
+  color: var(--fg-soft);
+  margin-bottom: 4px;
+}
+
+/* Misma grilla y tamaño para horas y días */
+.hourly-forecast,
+.daily-forecast .forecast-row{
+  display: grid;
+  grid-template-columns: repeat(6, minmax(140px, 1fr));
+  gap: 18px;
+}
+
+.hourly-forecast .forecast-item,
+.daily-forecast .forecast-item{
+  height: 120px;              /* igual que días */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-md);
+  background: rgba(15,26,43,.60);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-tile);
+}
+.hourly-forecast .forecast-item .day{
+  font-size: 13px;
+  color: var(--fg-soft);
+  margin-bottom: 4px;
+}
+
+
+.page-title{
+  font-weight: 300;           
+  letter-spacing: -0.3px;     
+  color: var(--fg-strong);
+}
+
+.section-title{
+  margin: 16px 0 8px;
+  font-size: 1.2rem;          
+  font-weight: 300;           
+  letter-spacing: .2px;
+  color: var(--fg);           
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/* Misma grilla y tamaño para horas y días */
+.hourly-forecast,
+.daily-forecast .forecast-row{
+  display: grid;
+  grid-template-columns: repeat(6, minmax(140px, 1fr));
+  gap: 18px;
+}
+
+.hourly-forecast .forecast-item,
+.daily-forecast .forecast-item{
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-md);
+  background: rgba(15,26,43,.60);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-tile);
+}
+.hourly-forecast .forecast-item .day{
+  font-size: 13px;
+  color: var(--fg-soft);
+  margin-bottom: 4px;
+}
+
+/* === Centrar todo y evitar scroll extra (clima) === */
+html, body { height: 100%; }
+
+body{
+  min-height: 100svh;
+  display: flex;
+  align-items: center;          /* centra horizontalmente .weather-wrap */
+  justify-content: center;      /* centra verticalmente .weather-wrap   */
+  padding: 24px 16px;           /* respirito sin provocar scroll        */
+  overflow-x: hidden;
+  overflow-y: hidden;           /* evita la barra de scroll vertical    */
+}
+
+/* La tarjeta principal centrada y sin márgenes que empujen */
+.weather-wrap{
+  width: min(1120px, 94vw);
+  margin: 0 !important;         /* sobreescribe el margin original      */
+  /* Si quieres un poco de aire interno en vez de margin: */
+  padding: 12px 0;
+}
+
+/* Cuando la pantalla es baja, permitimos scroll para que no se corte */
+@media (max-height: 720px){
+  body{
+    justify-content: flex-start;
+    overflow-y: auto;           /* vuelve a permitir scroll si no cabe  */
+    padding-top: 16px;
+  }
+  .weather-wrap{
+    margin: 8px auto 12px !important;
+  }
+}
+.back-button{
+  width: 42px;
+  height: 42px;
+  border-radius: var(--r-sm, 12px);
+  border: 1px solid var(--card-border, rgba(160,190,220,.14));
+  background: rgba(255,255,255,.06);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform .16s ease, background .2s ease, border-color .2s ease;
+}
+.back-button i{ font-size: 18px; opacity: .9; color: #fff; }
+.back-button:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.1);
+  border-color: rgba(190,210,230,.22);
+}
