@@ -277,7 +277,7 @@ def motion_energy(prev_sides, cur_sides):
 
 def main():
     """Ejecuta el pipeline completo: captura, detección, features, inferencia y envío de gestos."""
-    model, meta = load_checkpoint(["models/sequence_bigru.pt", "/mnt/data/sequence_bigru.pt"])
+    model, meta = load_checkpoint(["model/models/sequence_bigru.pt", "models/sequence_bigru.pt", "/mnt/data/sequence_bigru.pt"])
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device).eval()
 

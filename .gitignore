@@ -7,3 +7,7 @@ reports/logs/*
 !reports/logs/win/
 !reports/logs/pi/.gitkeep
 !reports/logs/win/.gitkeep
+
+# Entorno virtual
+venv/
+.venv/
