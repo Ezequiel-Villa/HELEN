@@ -1,57 +1,18 @@
 import time
 from collections import deque
-from pathlib import Path
+import logging
 import cv2
 import numpy as np
-import torch
-import torch.nn as nn
 import mediapipe as mp
 from mediapipe.framework.formats import landmark_pb2
 from backendConexion import post_gesturekey
 from helpers import labels_dict as helpers_labels
+from cloud_inference_client import get_model_metadata, get_prediction_from_cloud
 import threading
 import queue
 
-class BiGRUClassifier(nn.Module):
-    """Clasificador secuencial con GRU (opcionalmente bidireccional) y cabeza lineal."""
-    def __init__(self, input_dim, hidden_dim, num_layers, num_classes, dropout=0.2, bidirectional=True):
-        super().__init__()
-        self.gru = nn.GRU(
-            input_size=input_dim,
-            hidden_size=hidden_dim,
-            num_layers=num_layers,
-            batch_first=True,
-            dropout=dropout if num_layers > 1 else 0.0,
-            bidirectional=bidirectional
-        )
-        d = 2 if bidirectional else 1
-        self.head = nn.Sequential(
-            nn.LayerNorm(d * hidden_dim),
-            nn.Dropout(dropout),
-            nn.Linear(d * hidden_dim, num_classes)
-        )
 
-    def forward(self, x):
-        """Procesa la secuencia y devuelve logits usando el último estado temporal."""
-        out, _ = self.gru(x)
-        return self.head(out[:, -1, :])
-
-
-def load_checkpoint(paths):
-    """Carga el modelo y metadatos desde el primer checkpoint disponible."""
-    for p in paths:
-        p = Path(p)
-        if p.exists():
-            state = torch.load(p, map_location="cpu")
-            cfg, meta = state["config"], state.get("meta", {})
-            model = BiGRUClassifier(
-                cfg["input_dim"], cfg["hidden_dim"], cfg["num_layers"],
-                cfg["num_classes"], cfg["dropout"], cfg["bidirectional"]
-            )
-            model.load_state_dict(state["model_state"])
-            return model, meta
-    raise FileNotFoundError("No checkpoint found.")
-
+LOGGER = logging.getLogger("helen.rpi.inference")
 
 def normalize_xy(pts_xy, eps=1e-6):
     """Normaliza coordenadas XY a [0,1] por marco para ser invariante a escala/traslación."""
@@ -151,10 +112,10 @@ class GestureSender:
             try:
                 code = post_gesturekey(label)
                 if self.verbose:
-                    print(f"Detectado (async): {label} (status={code})")
+                    LOGGER.info("Detectado (async): %s (status=%s)", label, code)
             except Exception as e:
                 if self.verbose:
-                    print(f"post_gesturekey error (async): {e}")
+                    LOGGER.warning("post_gesturekey error (async): %s", e)
             self._last_sent = label
             self._last_sent_t = now
             try:
@@ -276,18 +237,31 @@ def motion_energy(prev_sides, cur_sides):
 
 
 def main():
-    """Ejecuta el pipeline completo: captura, detección, features, inferencia y envío de gestos."""
-    model, meta = load_checkpoint(["model/models/sequence_bigru.pt", "models/sequence_bigru.pt", "/mnt/data/sequence_bigru.pt"])
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model.to(device).eval()
+    """Ejecuta el pipeline completo: captura, detección, features e inferencia remota."""
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 
-    classes_numeric = meta.get("classes_numeric", [])
-    idx_to_label = {i: helpers_labels.get(orig_val, str(orig_val)) for i, orig_val in enumerate(classes_numeric)}
+    meta = get_model_metadata()
+    if not meta:
+        LOGGER.error("No se pudo obtener metadata del servidor de inferencia. Abortando.")
+        return
+
+    class_labels = list(meta.get("class_labels", []))
+    if not class_labels:
+        num_classes = int(meta.get("num_classes", 0))
+        class_labels = [helpers_labels.get(i, str(i)) for i in range(num_classes)]
+    idx_to_label = {i: label for i, label in enumerate(class_labels)}
 
     seq_len = int(meta.get("seq_len", 30))
     use_z = bool(meta.get("use_z", False))
     F_per_hand = 63 if use_z else 42
     F_total = 2 * F_per_hand
+
+    LOGGER.info(
+        "Metadata remota cargada: seq_len=%s, use_z=%s, clases=%s",
+        seq_len,
+        use_z,
+        ",".join(idx_to_label.values()),
+    )
 
     # Umbrales/heurísticas (ajustables)
     presence_enter, presence_exit = 0.85, 0.70
@@ -425,18 +399,11 @@ def main():
                 prob_buffer.clear()
                 cv2.putText(frame, "...", (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (200, 200, 200), 3)
             else:
-                # Build mask feature tensor for the sequence used
-                M_feat_seq = np.concatenate([
-                    np.repeat(masks[:, 0:1], F_per_hand, axis=1),
-                    np.repeat(masks[:, 1:2], F_per_hand, axis=1)
-                ], axis=1)
-                X = feats[None, ...].astype(np.float32)  # (1, T, F_total)
-                M_feat = M_feat_seq[None, ...].astype(np.float32)
-                X = (X * M_feat)
-
-                with torch.no_grad():
-                    out = model(torch.from_numpy(X).to(device))
-                    probs = torch.softmax(out, dim=1).cpu().numpy()[0]
+                response = get_prediction_from_cloud(feats.astype(np.float32), masks.astype(np.float32))
+                if not response or "probabilities" not in response:
+                    LOGGER.warning("Inferencia en la nube falló o respuesta inválida. Se omite el frame.")
+                    continue
+                probs = np.array(response["probabilities"], dtype=np.float32)
 
                 prob_buffer.append(probs)
                 avg_probs = np.mean(np.stack(prob_buffer), axis=0)
